@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 
+
 const path = __dirname + '/app/views/';
 
 const app = express();
@@ -52,6 +53,31 @@ db.sequelize.sync();
 //   console.log('Drop and Resync Database with { force: true }');
 //   initial();
 // });
+
+// CÓDIGO DE SAM //
+//APIS DE SAM
+//1
+app.get('/users/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const query = `SELECT * FROM vitales WHERE id_cliente = ${userId}`;
+
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Error en el servidor');
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).send('Usuario no encontrado');
+      return;
+    }
+
+    res.status(200).json(results[0]);
+  });
+});
+
+//******************************** */
 
 // simple route
 app.get("/", (req, res) => {
