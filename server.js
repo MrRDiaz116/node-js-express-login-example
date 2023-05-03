@@ -1,10 +1,32 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 
+const path = __dirname + '/app/views/';
+
 const app = express();
 
-app.use(cors());
+app.use(express.static(path));
+
+var corsOptions = {
+  origin: "http://localhost:8081"
+};
+
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const db = require("./app/models");
+
+db.sequelize.sync();
+
+app.get('/', function (req,res) {
+  res.sendFile(path + "index.html");
+});
+
+
+app.use(express.static(path));
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -22,7 +44,6 @@ app.use(
 );
 
 // database
-const db = require("./app/models");
 const Role = db.role;
 
 db.sequelize.sync();
