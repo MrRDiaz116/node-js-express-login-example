@@ -11,7 +11,7 @@ module.exports = function(app) {
   });
 
   app.get(
-    "/api/test/vitals",
+    "/api/test/vitals/:id_cliente",
     [authJwt.verifyToken],
     controller.findAllId
   );

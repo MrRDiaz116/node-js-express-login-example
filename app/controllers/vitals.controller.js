@@ -10,7 +10,7 @@ const bcrypt = require("bcryptjs");
 
 
 exports.findAllId = (req, res) => {
-    const id_cliente = req.body.id_cliente;
+    const id_cliente = req.params.id_cliente;
     //var condition = id_cliente ? { id_cliente: { [Op.like]: `%${id_cliente}%` } } : null;
     
     Vitals.findAll({where: {id_cliente: id_cliente} })
