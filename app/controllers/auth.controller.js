@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+const Vitals = db.vitals;
 
 const Op = db.Sequelize.Op;
 
@@ -39,12 +40,14 @@ exports.signup = async (req, res) => {
 };
 
 exports.signin = async (req, res) => {
+
   try {
     const user = await User.findOne({
       where: {
         username: req.body.username,
       },
     });
+
 
     if (!user) {
       return res.status(404).send({ message: "Usuario no encontrado." });

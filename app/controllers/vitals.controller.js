@@ -4,17 +4,27 @@ const User = db.user;
 const Role = db.role;
 const Vitals = db.vitals;
 const Op = db.Sequelize.Op;
+const util = require("node:util")
+
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 
-exports.findAllId = (req, res) => {
-    const id_cliente = req.params.id_cliente;
-    //var condition = id_cliente ? { id_cliente: { [Op.like]: `%${id_cliente}%` } } : null;
+
+
+exports.findAllId = async (req, res) => {
+  
     
-    Vitals.findAll({where: {id_cliente: id_cliente} })
+    const userid = req.params.userid;
+    //var condition = id_cliente ? { id_cliente: { [Op.like]: `%${id_cliente}%` } } : null;
+    const vital = await Vitals.findAll({
+      attributes: [
+        `id_cliente`,`ritmo_cardiaco`, `frecuencia_respiratoria`, `peso`, `indice_masa_corporal`, `saturacion_oxigeno`, `temperatura`, `presion_sanguinea_sistolica`, `presion_sanguinea_diastolica`, `altura`
+      ],
+      where: {id_cliente: userid} })
         .then(data => {
+            console.log(data);
             res.send(data);
         })
         .catch(err => {
@@ -23,4 +33,5 @@ exports.findAllId = (req, res) => {
                 err.message || "Un error sucedió al localizar los datos."
             });
           });
+    
   };
