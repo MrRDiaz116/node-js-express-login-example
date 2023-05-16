@@ -15,4 +15,10 @@ module.exports = function(app) {
     controller.findAllId
   );
 
+  app.get(
+    "/api/test/table_vitals/:userid",
+    [authJwt.verifyToken],
+    controller.findAllId
+  );
+
 };

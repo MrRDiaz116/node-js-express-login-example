@@ -1,6 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
+const Client = db.client;
 const Role = db.role;
 const Vitals = db.vitals;
 
@@ -13,18 +14,18 @@ exports.signup = async (req, res) => {
   // Save User to Database
   try {
     const user = await User.create({
-      username: req.body.username,
       nombre: req.body.nombre,
       apellido_paterno: req.body.apellido_paterno,
       apellido_materno: req.body.apellido_materno,
       genero: req.body.genero,
       correo: req.body.correo,
       telefono: req.body.telefono,
-      fecha_nacimiento: req.body.fecha_nacimiento,
       contrasena: bcrypt.hashSync(req.body.contrasena, 8),
       ciudad: req.body.ciudad,
       estado: req.body.estado,
-      codigo_postal: req.body.codigo_postal
+      codigo_postal: req.body.codigo_postal,
+      a_nacimiento: req.body.a_nacimiento,
+      respuesta_seguridad: req.body.respuesta_seguridad
     });
 
     if (req.body.roles) {
@@ -49,15 +50,32 @@ exports.signup = async (req, res) => {
 };
 
 
+exports.registerUser = async (req, res) => {
+  // Save User to User table
+  try {
+    const client = await Client.create({
+      id_cliente: req.body.id_cliente,
+      correo: req.body.correo,
+      contrasena: bcrypt.hashSync(req.body.contrasena, 8)
+    });
 
+    res.status(200).send("Registro en users exitoso");
 
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
 
 
 exports.signin = async (req, res) => {
 
   try {
+    /*const client = await Client.findOne({
+      where: {
+        correo: req.body.correo,
+      },
+    });*/
 
-    console.log(req.body.correo)
     const user = await User.findOne({
       where: {
         correo: req.body.correo,
@@ -80,21 +98,19 @@ exports.signin = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user.id }, config.secret, {
+    const token = jwt.sign({ id: user.id}, config.secret, {
       expiresIn: 86400, // 24 horas
     });
 
-    let authorities = [];
-    const roles = await user.getRoles();
+  let authorities = [];
+   const roles = await user.getRoles();
     for (let i = 0; i < roles.length; i++) {
       authorities.push("ROLE_" + roles[i].name.toUpperCase());
-    }
-
+  }
    req.session.token = token;
 
     return res.status(200).send({
-      id: user.id,
-      username: user.username,
+      id: user.id_cliente,
       correo: user.correo,
       roles: authorities,
     });

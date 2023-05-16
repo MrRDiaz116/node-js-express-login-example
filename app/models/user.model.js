@@ -1,7 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define("clientes_prueba", {
-    username: {
-      type: Sequelize.STRING
+  const Client = sequelize.define("clientes_pruebas", {
+    id_cliente: {
+      type: Sequelize.INTEGER,
+      primaryKey: true
     },
     nombre: {
       type: Sequelize.STRING
@@ -19,10 +20,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     telefono: {
-      type: Sequelize.STRING
-    },
-    fecha_nacimiento: {
-      type: Sequelize.STRING
+      type: Sequelize.BIGINT
     },
     contrasena: {
       type: Sequelize.STRING
@@ -34,12 +32,21 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     codigo_postal: {
+      type: Sequelize.INTEGER
+    },
+    a_nacimiento: {
+      type: Sequelize.INTEGER
+    },
+    respuesta_seguridad: {
       type: Sequelize.STRING
-    }
+    },
+    placeholder: {
+      type: Sequelize.STRING
+    },
   },
   { timestamps: false }
   );
 
-  return User;
+  return Client;
 };
 
