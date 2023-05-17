@@ -18,10 +18,9 @@ exports.findAllId = async (req, res) => {
       attributes: [
         `id_cliente`,`ritmo_cardiaco`, `frecuencia_respiratoria`, `peso`, `indice_masa_corporal`, `saturacion_oxigeno`, `temperatura`, `presion_sanguinea_sistolica`, `presion_sanguinea_diastolica`, `altura`,`date_time`
       ],
-      where: {id_cliente: userid},
+      where: {id_cliente: 5},
       order: [ [ 'date_time', 'DESC' ]] })
         .then(data => {
-            console.log(data);
             res.send(data);
         })
         .catch(err => {

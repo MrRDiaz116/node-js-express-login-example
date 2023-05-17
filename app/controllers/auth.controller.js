@@ -92,11 +92,10 @@ exports.signin = (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: "Invalid Password!"
+          message: "¡Contraseña inválida!"
         });
       }
-
-      var token = jwt.sign({ id: client.clientesPruebaIdCliente }, config.secret, {
+      var token = jwt.sign({ id: client.userid }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
 
@@ -106,7 +105,8 @@ exports.signin = (req, res) => {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
 
-        console.log(client.getRole())
+        req.session.token = token;
+        
         res.status(200).send({
           id: client.clientesPruebaIdCliente,
           correo: client.correo,

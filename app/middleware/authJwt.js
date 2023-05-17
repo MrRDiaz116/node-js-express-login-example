@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
-const User = db.user;
+const Client = db.client;
 
 
 verifyToken = (req, res, next) => {
@@ -9,7 +9,7 @@ verifyToken = (req, res, next) => {
 
   if (!token) {
     return res.status(403).send({
-      message: "No se porporcionó un token!",
+      message: "¡No se porporcionó un token!",
     });
   }
 
@@ -24,7 +24,7 @@ verifyToken = (req, res, next) => {
   });
 };
 
-isAdmin = async (req, res, next) => {
+/*isAdmin = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.userId);
     const roles = await user.getRoles();
@@ -43,9 +43,27 @@ isAdmin = async (req, res, next) => {
       message: "No se puede validar el rol de admin!",
     });
   }
+};*/
+
+isAdmin = (req, res, next) => {
+  Client.findByPk(req.userId).then(client => {
+    client.getRole().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "admin") {
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "¡Se requiere rol de Administrador!"
+      });
+      return;
+    });
+  });
 };
 
-isModerator = async (req, res, next) => {
+/*isModerator = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.userId);
     const roles = await user.getRoles();
@@ -64,9 +82,26 @@ isModerator = async (req, res, next) => {
       message: "No se puede validar el rol de moderator!",
     });
   }
+};*/
+
+isModerator = (req, res, next) => {
+  Client.findByPk(req.userId).then(client => {
+    client.getRole().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "moderator") {
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "¡Se requiere rol de moderador!"
+      });
+    });
+  });
 };
 
-isModeratorOrAdmin = async (req, res, next) => {
+/*isModeratorOrAdmin = async (req, res, next) => {
   try {
     const user = await User.findByPk(req.userId);
     const roles = await user.getRoles();
@@ -89,12 +124,34 @@ isModeratorOrAdmin = async (req, res, next) => {
       message: "No se puede validar el rol de moderator o de admin!",
     });
   }
+};*/
+
+isModeratorOrAdmin = (req, res, next) => {
+  Client.findByPk(req.userId).then(client => {
+    client.getRole().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "moderator") {
+          next();
+          return;
+        }
+
+        if (roles[i].name === "admin") {
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "¡Se requiere rol de moderador o administrador!"
+      });
+    });
+  });
 };
 
 const authJwt = {
-  verifyToken,
-  isAdmin,
-  isModerator,
-  isModeratorOrAdmin,
+  verifyToken: verifyToken,
+  isAdmin: isAdmin,
+  isModerator: isModerator,
+  isModeratorOrAdmin: isModeratorOrAdmin
 };
 module.exports = authJwt;
