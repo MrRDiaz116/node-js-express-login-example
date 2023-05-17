@@ -1,7 +1,7 @@
 {
-  "name": "node-js-express-login-example",
+  "name": "pagina-de-seguimiento",
   "version": "1.0.0",
-  "description": "Node.js Express Login and Registration example",
+  "description": "Página de seguimiento para pacientes.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,7 +17,7 @@
     "authorization",
     "mysql"
   ],
-  "author": "bezkoder",
+  "author": "Salette",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

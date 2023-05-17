@@ -25,6 +25,7 @@ checkDuplicateUsernameOrEmail = async (req, res, next) => {
     });
 
     if (user) {
+      console.log(user)
       return res.status(400).send({
         message: "El email ya está en uso."
       });
