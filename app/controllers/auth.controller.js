@@ -174,8 +174,6 @@ exports.signin = (req, res) => {
 };*/
 
 
-
-
 exports.signout = async (req, res) => {
   try {
     req.session = null;
