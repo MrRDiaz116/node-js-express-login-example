@@ -48,13 +48,10 @@ verifyToken = (req, res, next) => {
 isAdmin = (req, res, next) => {
   Client.findByPk(req.userId).then(client => {
     client.getRole().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "admin") {
-          next();
-          return;
-        }
+      if (roles.name === "admin") {
+            next();
+            return;
       }
-
       res.status(403).send({
         message: "¡Se requiere rol de Administrador!"
       });
@@ -87,16 +84,14 @@ isAdmin = (req, res, next) => {
 isModerator = (req, res, next) => {
   Client.findByPk(req.userId).then(client => {
     client.getRole().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "moderator") {
-          next();
-          return;
-        }
+      if (roles.name === "moderator") {
+            next();
+            return;
       }
-
       res.status(403).send({
-        message: "¡Se requiere rol de moderador!"
+        message: "¡Se requiere rol de Moderador!"
       });
+      return;
     });
   });
 };

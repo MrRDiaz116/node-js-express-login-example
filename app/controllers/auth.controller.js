@@ -3,6 +3,7 @@ const config = require("../config/auth.config");
 const User = db.user;
 const Client = db.client;
 const Role = db.role;
+const list = db.ROLES;
 
 const Op = db.Sequelize.Op;
 
@@ -99,11 +100,21 @@ exports.signin = (req, res) => {
         expiresIn: 86400 // 24 hours
       });
 
-      var authorities = [];
-      client.getRole().then(roles => {
-        for (let i = 0; i < roles.length; i++) {
+      console.log("AQUÍ ES");
+      console.log(client.rolesPruebaRoleid);
+    
+      const index_role = client.rolesPruebaRoleid;
+      Role.findByPk(index_role).then(roles => {
+        /*for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
-        }
+        }*/
+        
+        /*const index_role = client.rolesPruebaRoleid;
+        console.log(index_role);
+        console.log(Role.findByPk(1));*/
+        const authorities = "ROLE_" + roles.name.toUpperCase();
+
+
 
         req.session.token = token;
         
@@ -112,7 +123,7 @@ exports.signin = (req, res) => {
           correo: client.correo,
           roles: authorities
         });
-      });
+     });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
