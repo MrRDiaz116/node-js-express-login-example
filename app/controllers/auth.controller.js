@@ -100,30 +100,25 @@ exports.signin = (req, res) => {
         expiresIn: 86400 // 24 hours
       });
 
+      
       console.log("AQUÍ ES");
       console.log(client.rolesPruebaRoleid);
     
       const index_role = client.rolesPruebaRoleid;
       Role.findByPk(index_role).then(roles => {
-        /*for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
-        }*/
-        
-        /*const index_role = client.rolesPruebaRoleid;
-        console.log(index_role);
-        console.log(Role.findByPk(1));*/
         const authorities = "ROLE_" + roles.name.toUpperCase();
+        User.findByPk(client.clientesPruebaIdCliente).then(usuario => {
 
-
-
-        req.session.token = token;
-        
-        res.status(200).send({
-          id: client.clientesPruebaIdCliente,
-          correo: client.correo,
-          roles: authorities
-        });
-     });
+                  req.session.token = token;
+                  
+                  res.status(200).send({
+                    id: client.clientesPruebaIdCliente,
+                    nombre: usuario.nombre,
+                    correo: client.correo,
+                    roles: authorities
+                  });
+              });
+         });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
