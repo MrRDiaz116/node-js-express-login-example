@@ -7,11 +7,11 @@ exports.userBoard = (req, res) => {
 };
 
 exports.adminBoard = (req, res) => {
-  res.status(200).send("Contenido de admin.");
+  res.status(200).send("Contenido de farmacia.");
 };
 
 exports.moderatorBoard = (req, res) => {
-  res.status(200).send("Contenido de moderador.");
+  res.status(200).send("Contenido de gobierno.");
 };
 
 exports.dashboardBoard = (req, res) => {

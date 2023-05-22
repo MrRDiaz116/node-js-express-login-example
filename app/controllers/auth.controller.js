@@ -87,21 +87,28 @@ exports.signin = (req, res) => {
     
       const index_role = client.rolesPruebaRoleid;
       Role.findByPk(index_role).then(roles => {
-        const authorities = "ROLE_" + roles.name.toUpperCase();
-        User.findByPk(client.clientesPruebaIdCliente).then(usuario => {
+      const authorities = "ROLE_" + roles.name.toUpperCase();
 
-                  req.session.token = token;
-                  
-                  res.status(200).send({
-                    id: client.clientesPruebaIdCliente,
-                    nombre: usuario.nombre,
-                    correo: client.correo,
-                    roles: authorities
-                  });
-              });
-         });
+      req.session.token = token;
+      res.status(200).send({
+                          id: client.clientesPruebaIdCliente,
+                          correo: client.correo,
+                          roles: authorities
+                          });
+      });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+};
+
+exports.signout = async (req, res) => {
+  try {
+    req.session = null;
+    return res.status(200).send({
+      message: "Se cerró sesión."
+    });
+  } catch (err) {
+    this.next(err);
+  }
 };
