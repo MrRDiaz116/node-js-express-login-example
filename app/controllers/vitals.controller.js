@@ -7,16 +7,19 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 
-
-
 exports.findAllId = async (req, res) => {
   
     
     const userid = req.params.userid;
-    //var condition = id_cliente ? { id_cliente: { [Op.like]: `%${id_cliente}%` } } : null;
     const vital = await Vitals.findAll({
       attributes: [
-        `id_cliente`,`ritmo_cardiaco`, `frecuencia_respiratoria`, `peso`, `indice_masa_corporal`, `saturacion_oxigeno`, `temperatura`, `presion_sanguinea_sistolica`, `presion_sanguinea_diastolica`, `altura`,`date_time`
+        `id_cliente`,`ritmo_cardiaco`, 
+        `frecuencia_respiratoria`, `peso`, 
+        `indice_masa_corporal`, 
+        `saturacion_oxigeno`, `temperatura`,
+         `presion_sanguinea_sistolica`, 
+        `presion_sanguinea_diastolica`, 
+        `altura`, `date_time`
       ],
       where: {id_cliente: userid},
       order: [ [ 'date_time', 'DESC' ]] })
@@ -26,7 +29,7 @@ exports.findAllId = async (req, res) => {
         .catch(err => {
             res.status(500).send({
               message:
-                err.message || "Un error sucedió al localizar los datos."
+                err.message || "Sucedió un error al localizar los datos."
             });
           });
     

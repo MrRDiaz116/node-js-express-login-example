@@ -29,19 +29,6 @@ db.user = require("./user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.vitals = require("../models/vitals.model.js")(sequelize, Sequelize);
 
-/*db.role.belongsToMany(db.client, {
-  through: "client_roles",
-  foreignKey: "roleId",
-  otherKey: "id_cliente"
-});
-db.client.belongsToMany(db.role, {
-  through: "client_roles",
-  foreignKey: "id_cliente",
-  otherKey: "roleId"
-});*/
-
-
-
 db.role.hasMany(db.client, { as: "client" });
 db.client.belongsTo(db.role, {
   foreignKey: "rolesPruebaRoleid",

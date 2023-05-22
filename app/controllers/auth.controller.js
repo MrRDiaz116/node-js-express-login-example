@@ -11,7 +11,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 exports.signup = async (req, res) => {
-  // Save User to Database
   try {
     const user = await User.create({
       nombre: req.body.nombre,
@@ -55,24 +54,6 @@ exports.signup = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
-
-
-/*exports.registerUser = async (req, res) => {
-  // Save User to User table
-  try {
-    const client = await Client.create({
-      id_cliente: req.body.id_cliente,
-      correo: req.body.correo,
-      contrasena: bcrypt.hashSync(req.body.contrasena, 8)
-    });
-
-    res.status(200).send("Registro en users exitoso");
-
-  } catch (error) {
-    res.status(500).send({ message: error.message });
-  }
-};*/
-
 
 exports.signin = (req, res) => {
   Client.findOne({
@@ -123,70 +104,4 @@ exports.signin = (req, res) => {
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
-};
-
-
-/*exports.signin = async (req, res) => {
-
-  try {
-    const client = await Client.findOne({
-      where: {
-        correo: req.body.correo,
-      },
-    });
-
-    const user = await User.findOne({
-      where: {
-        correo: req.body.correo,
-      },
-    });
-
-
-    if (!client) {
-      return res.status(404).send({ message: "Usuario no encontrado." });
-    }
-
-    const passwordIsValid = bcrypt.compareSync(
-      req.body.contrasena,
-      client.contrasena
-    );
-
-    if (!passwordIsValid) {
-      return res.status(401).send({
-        message: "¡Contraseña inválida!",
-      });
-    }
-
-    const token = jwt.sign({ id: client.id_cliente}, config.secret, {
-      expiresIn: 86400, // 24 horas
-    });
-
-    var authorities = [];
-    user.getRoles().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        authorities.push("ROLE_" + roles[i].name.toUpperCase());
-      }
-  //let authorities = ['ROLE_USER'];
-   req.session.token = token;
-
-    return res.status(200).send({
-      id: client.id_cliente,
-      correo: client.correo,
-      roles: authorities,
-    });
-  } catch (error) {
-    return res.status(500).send({ message: error.message });
-  }
-};*/
-
-
-exports.signout = async (req, res) => {
-  try {
-    req.session = null;
-    return res.status(200).send({
-      message: "Se cerró sesión."
-    });
-  } catch (err) {
-    this.next(err);
-  }
 };
