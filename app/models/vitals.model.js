@@ -38,7 +38,7 @@ module.exports = (sequelize, Sequelize) => {
       altura: {
         type: Sequelize.FLOAT
       },
-      fecha: {
+      date_time: {
         type: Sequelize.DATE
       }
     },

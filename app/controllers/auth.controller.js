@@ -80,10 +80,6 @@ exports.signin = (req, res) => {
       var token = jwt.sign({ id: client.userid }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
-
-      
-      console.log("AQUÍ ES");
-      console.log(client.rolesPruebaRoleid);
     
       const index_role = client.rolesPruebaRoleid;
       Role.findByPk(index_role).then(roles => {

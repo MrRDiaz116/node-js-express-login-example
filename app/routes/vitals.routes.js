@@ -9,16 +9,10 @@ module.exports = function(app) {
     next();
   });
 
-  app.get(
+  app.post(
     "/api/test/vitals/:userid",
-    [authJwt.verifyToken],
-    controller.findAllId
-  );
-
-  app.get(
-    "/api/test/table_vitals/:userid",
-    [authJwt.verifyToken],
-    controller.findAllId
+    //[authJwt.verifyToken],
+    controller.createVitals
   );
 
 };
