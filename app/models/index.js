@@ -40,6 +40,6 @@ db.client.belongsTo(db.user);
 
 
 
-db.ROLES = ["user", "admin", "moderator"];
+db.ROLES = ["user", "pharmacy", "gov"];
 
 module.exports = db;

@@ -25,15 +25,15 @@ verifyToken = (req, res, next) => {
 };
 
 
-isAdmin = (req, res, next) => {
+isPharmacy = (req, res, next) => {
   Client.findByPk(req.userId).then(client => {
     client.getRole().then(roles => {
-      if (roles.name === "admin") {
+      if (roles.name === "pharmacy") {
             next();
             return;
       }
       res.status(403).send({
-        message: "¡Se requiere rol de Administrador!"
+        message: "¡Contenido disponible únicamente para la farmacéutica!"
       });
       return;
     });
@@ -41,15 +41,15 @@ isAdmin = (req, res, next) => {
 };
 
 
-isModerator = (req, res, next) => {
+isGov = (req, res, next) => {
   Client.findByPk(req.userId).then(client => {
     client.getRole().then(roles => {
-      if (roles.name === "moderator") {
+      if (roles.name === "gov") {
             next();
             return;
       }
       res.status(403).send({
-        message: "¡Se requiere rol de Moderador!"
+        message: "¡Contenido disponible únicamente para el gobierno!"
       });
       return;
     });
@@ -59,7 +59,7 @@ isModerator = (req, res, next) => {
 
 const authJwt = {
   verifyToken: verifyToken,
-  isAdmin: isAdmin,
-  isModerator: isModerator
+  isPharmacy: isPharmacy,
+  isGov: isGov
 };
 module.exports = authJwt;

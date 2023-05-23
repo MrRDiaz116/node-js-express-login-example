@@ -6,11 +6,11 @@ exports.userBoard = (req, res) => {
   res.status(200).send("Contenido de usuario.");
 };
 
-exports.adminBoard = (req, res) => {
+exports.pharmacyBoard = (req, res) => {
   res.status(200).send("Contenido de farmacia.");
 };
 
-exports.moderatorBoard = (req, res) => {
+exports.govBoard = (req, res) => {
   res.status(200).send("Contenido de gobierno.");
 };
 

@@ -65,11 +65,11 @@ function initial() {
 
   Role.create({
     id: 2,
-    name: "moderator",
+    name: "gov",
   });
 
   Role.create({
     id: 3,
-    name: "admin",
+    name: "pharmacy",
   });
 }

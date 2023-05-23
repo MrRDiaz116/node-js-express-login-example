@@ -19,15 +19,15 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/test/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
+    "/api/test/gov",
+    [authJwt.verifyToken, authJwt.isGov],
+    controller.govBoard
   );
 
   app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
+    "/api/test/pharmacy",
+    [authJwt.verifyToken, authJwt.isPharmacy],
+    controller.pharmacyBoard
   );
 
   app.get(
