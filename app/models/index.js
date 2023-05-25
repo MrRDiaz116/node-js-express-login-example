@@ -17,19 +17,6 @@ const sequelize = new Sequelize(
       acquire: config.pool.acquire,
       idle: config.pool.idle
     },
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-
-=======
->>>>>>> Stashed changes
-    dialectOptions: {
-    ssl: {
-      ca: fs.readFileSync("C:/Users/Salet/Downloads/ca.pem"),  // Ruta al archivo del certificado de autoridad (CA)
-      cert: fs.readFileSync("C:/Users/Salet/Downloads/client-cert.pem"),  // Ruta al archivo del certificado del cliente
-      key: fs.readFileSync("C:/Users/Salet/Downloads/client-key.pem"),  // Ruta al archivo de la clave privada del cliente
-    }
-    }
-=======
     // ******** AQUÍ COPIEN Y PEGUEN LAS RUTAS DE SUS ARCHIVOS *******************************************************
     dialectOptions: {
       ssl: {
@@ -38,7 +25,6 @@ const sequelize = new Sequelize(
         key: fs.readFileSync("C:/Users/Salet/Downloads/client-key.pem"),  // Ruta al archivo de la clave privada del cliente
       }
       }
->>>>>>> d672d748163839f0f1b6692547e4e713f9858a0e
   }
 );
 
