@@ -5,9 +5,6 @@ module.exports = (sequelize, Sequelize) => {
         autoIncrement: true,
         primaryKey: true
       },
-      id_contacto_confianza: {
-        type: Sequelize.INTEGER
-      },
       correo: {
         type: Sequelize.STRING
       },
@@ -21,10 +18,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       saltPrivada: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       key: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       iv: {
         type: Sequelize.STRING
@@ -57,11 +54,12 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       rolePregunta: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       pregunta_seguridad: {
         type: Sequelize.STRING
-      }
+      },
+      
     },
     { timestamps: false }
     );
