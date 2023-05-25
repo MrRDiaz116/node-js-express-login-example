@@ -17,8 +17,11 @@ const sequelize = new Sequelize(
       acquire: config.pool.acquire,
       idle: config.pool.idle
     },
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 
+=======
+>>>>>>> Stashed changes
     dialectOptions: {
     ssl: {
       ca: fs.readFileSync("C:/Users/Salet/Downloads/ca.pem"),  // Ruta al archivo del certificado de autoridad (CA)
