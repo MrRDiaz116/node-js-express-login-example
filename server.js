@@ -32,8 +32,13 @@ app.use(
 
 // database
 const db = require("./app/models");
+const db_normal = require("./app/models copy");
+
+
 
 db.sequelize.sync();
+db_normal.sequelize.sync();
+
 // force: true will drop the table if it already exists
 // db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Database with { force: true }');
@@ -47,6 +52,8 @@ app.get("/", (req, res) => {
 
 // routes
 require("./app/routes/vitals.routes")(app);
+require("./app/routes/vitals.routes copy")(app);
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

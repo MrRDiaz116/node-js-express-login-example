@@ -11,12 +11,14 @@ const sequelize = new Sequelize(
     operatorsAliases: false,
     dialect: config.dialect,
 
+
     pool: {
       max: config.pool.max,
       min: config.pool.min,
       acquire: config.pool.acquire,
       idle: config.pool.idle
     },
+
     // ******** AQUÍ COPIEN Y PEGUEN LAS RUTAS DE SUS ARCHIVOS *******************************************************
     dialectOptions: {
       ssl: {
@@ -32,6 +34,11 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+
+
 db.vitals = require("../models/vitals.model.js")(sequelize, Sequelize);
 
+
 module.exports = db;
+
+
