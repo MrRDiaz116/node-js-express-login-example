@@ -10,9 +10,8 @@ module.exports = function(app) {
   });
 
   app.post(
-    "/api/test/vitals/:userid",
+    "/api/test/desensibilizada/vitals/",
     //[authJwt.verifyToken],
-    controller.createVitals
-  );
+    controller.createVitals)
 
 };

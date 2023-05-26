@@ -5,10 +5,10 @@ module.exports = (sequelize, Sequelize) => {
         autoIncrement: true,
         primaryKey: true
       },
-      id_cliente: {
-        type: Sequelize.INTEGER
+      id_hash: {
+        type: Sequelize.STRING
       },
-      id_local: {
+      id_sucursal: {
         type: Sequelize.INTEGER
       },
       ritmo_cardiaco: {

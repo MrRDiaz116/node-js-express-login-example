@@ -32,28 +32,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.client = require("./client.model.js")(sequelize, Sequelize);
-db.user = require("./user.model.js")(sequelize, Sequelize);
-db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.vitals = require("../models/vitals.model.js")(sequelize, Sequelize);
-db.contact = require("../models/contact.model.js")(sequelize, Sequelize);
-
-db.role.hasMany(db.client, { as: "client" });
-db.client.belongsTo(db.role, {
-  foreignKey: "rolesPruebaRoleid",
-  as: "role",
-});
-
-db.contact.hasMany(db.client, { as: "client" });
-db.client.belongsTo(db.contact, {
-  foreignKey: "cConfianzaPruebaIdContactoConfianza",
-  as: "contact",
-});
-
-
-db.user.hasOne(db.client);
-db.client.belongsTo(db.user);
-
-db.ROLES = ["user", "pharmacy", "gov"];
 
 module.exports = db;
