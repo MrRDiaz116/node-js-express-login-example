@@ -32,12 +32,12 @@ app.use(
 
 // database
 const db = require("./app/models");
-const db_normal = require("./app/models copy");
+const db_desensibilizada = require("./app/models_desensibilizada");
 
 
 
 db.sequelize.sync();
-db_normal.sequelize.sync();
+db_desensibilizada.sequelize.sync();
 
 // force: true will drop the table if it already exists
 // db.sequelize.sync({force: true}).then(() => {
@@ -52,7 +52,7 @@ app.get("/", (req, res) => {
 
 // routes
 require("./app/routes/vitals.routes")(app);
-require("./app/routes/vitals.routes copy")(app);
+require("./app/routes/vitals_desensibilizada.routes")(app);
 
 
 // set port, listen for requests

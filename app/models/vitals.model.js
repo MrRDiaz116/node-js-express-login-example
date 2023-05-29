@@ -1,49 +1,49 @@
 module.exports = (sequelize, Sequelize) => {
-    const Vitals = sequelize.define("vitales", {
-      id_lectura: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-      },
-      id_hash: {
-        type: Sequelize.STRING
-      },
-      id_sucursal: {
-        type: Sequelize.INTEGER
-      },
-      ritmo_cardiaco: {
-        type: Sequelize.INTEGER
-      },
-      frecuencia_respiratoria: {
-        type: Sequelize.INTEGER
-      },
-      peso: {
-        type: Sequelize.FLOAT
-      },
-      indice_masa_corporal: {
-        type: Sequelize.FLOAT
-      },
-      saturacion_oxigeno: {
-        type: Sequelize.INTEGER
-      },
-      temperatura: {
-        type: Sequelize.FLOAT
-      },
-      presion_sanguinea_sistolica: {
-        type: Sequelize.INTEGER
-      },
-      presion_sanguinea_diastolica: {
-        type: Sequelize.INTEGER
-      },
-      altura: {
-        type: Sequelize.FLOAT
-      },
-      date_time: {
-        type: Sequelize.DATE
-      }
+  const VitalsNormal = sequelize.define("vital_prueba", {
+    id_lectura: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
     },
-    { timestamps: false }
-    );
-  
-    return Vitals;
-  };
+    id_cliente: {
+      type: Sequelize.INTEGER
+    },
+    id_local: {
+      type: Sequelize.INTEGER
+    },
+    ritmo_cardiaco: {
+      type: Sequelize.STRING
+    },
+    frecuencia_respiratoria: {
+      type: Sequelize.STRING
+    },
+    peso: {
+      type: Sequelize.STRING
+    },
+    indice_masa_corporal: {
+      type: Sequelize.STRING
+    },
+    saturacion_oxigeno: {
+      type: Sequelize.STRING
+    },
+    temperatura: {
+      type: Sequelize.STRING
+    },
+    presion_sanguinea_sistolica: {
+      type: Sequelize.STRING
+    },
+    presion_sanguinea_diastolica: {
+      type: Sequelize.STRING
+    },
+    altura: {
+      type: Sequelize.STRING
+    },
+    date_time: {
+      type: Sequelize.DATE
+    }
+  },
+  { timestamps: false }
+  );
+
+  return VitalsNormal;
+};

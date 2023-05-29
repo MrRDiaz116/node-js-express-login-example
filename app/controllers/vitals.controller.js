@@ -1,42 +1,79 @@
-const db = require("../models");
+const db = require("../models/index");
 const Vitals = db.vitals;
-const util = require("node:util")
+const cryp = require("../controllers/cryp.controller")
 
+const util = require("node:util");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+exports.createVitalsNormal = async (req, res) => {
+  const id_sucursal_ = 3;
+  const userid = req.params.userid;
+  try {
+    const vital_normal = await Vitals.create({
+      id_cliente: userid,
+      id_local: id_sucursal_,
+      ritmo_cardiaco: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.ritmo_cardiaco),
+      frecuencia_respiratoria: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.frecuencia_respiratoria),
+      peso: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario,req.body.peso),
+      indice_masa_corporal: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.indice_masa_corporal),
+      saturacion_oxigeno: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.saturacion_oxigeno),
+      temperatura: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.temperatura),
+      presion_sanguinea_sistolica: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.presion_sanguinea_sistolica),
+      presion_sanguinea_diastolica: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.presion_sanguinea_diastolica),
+      altura: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.altura),
+    });
 
-exports.createVitals = async (req, res) => {
-  
-    
-    const id_sucursal_ = 3;
-    const id_hash = "39a75a33cf356231201163ac544580bb";
-
-    const vital = await Vitals.create({ 
-      id_hash: id_hash,  
-      //id_sucursal: id_sucursal_,
-      ritmo_cardiaco: req.body.ritmo_cardiaco, 
-      frecuencia_respiratoria: req.body.frecuencia_respiratoria, 
-      peso: req.body.peso, 
-      indice_masa_corporal: req.body.indice_masa_corporal, 
-      saturacion_oxigeno: req.body.saturacion_oxigeno, 
-      temperatura: req.body.temperatura, 
-      presion_sanguinea_sistolica: req.body.presion_sanguinea_sistolica, 
-      presion_sanguinea_diastolica: req.body.presion_sanguinea_diastolica, 
-      altura: req.body.altura, 
-      //date_time: req.body.date_time
-    }
-
-    )
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-              message:
-                err.message || "Sucedió un error al localizar los datos."
-            });
-          });
-    
-  };
+    res.send(vital_normal);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || "Sucedió un error al localizar los datos.",
+    });
+  }
+};
