@@ -33,7 +33,7 @@ app.use(
 // database
 const db = require("./app/models");
 const db_desensibilizada = require("./app/models_desensibilizada");
-
+const Role = db.role;
 
 
 db.sequelize.sync();
@@ -61,3 +61,20 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+function initial() {
+  Role.create({
+    id: 1,
+    name: "user",
+  });
+
+  Role.create({
+    id: 2,
+    name: "gov",
+  });
+
+  Role.create({
+    id: 3,
+    name: "pharmacy",
+  });
+}
