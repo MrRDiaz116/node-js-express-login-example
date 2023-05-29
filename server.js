@@ -53,6 +53,7 @@ app.get("/", (req, res) => {
 // routes
 require("./app/routes/vitals.routes")(app);
 require("./app/routes/vitals_desensibilizada.routes")(app);
+require("./app/routes/auth.routes")(app);
 
 
 // set port, listen for requests
