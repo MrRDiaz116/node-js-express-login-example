@@ -38,7 +38,10 @@ module.exports = (sequelize, Sequelize) => {
       respuesta_seguridad: {
         type: Sequelize.STRING
       },
-      placeholder: {
+      placeholder_h: {
+        type: Sequelize.STRING
+      },
+      pregunta_seguridad: {
         type: Sequelize.STRING
       },
     },
