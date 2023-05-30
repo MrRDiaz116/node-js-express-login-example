@@ -175,15 +175,13 @@ module.exports ={
                 a_nacimiento = String(a_nacimiento);
                 // Concatenación de las variables anteriores en una sola:
                 const cadena = nombre + apellido_paterno + apellido_materno + a_nacimiento + placeholder;
-                console.log(cadena);
                 // Creación del objeto HASH con el algoritmo sha256
                 const hash = crypto.createHash('sha256');
                 // Se alimenta el objeto HASH con la cadena que se quiere encriptar
-                hash.update(nombre);
+                hash.update(cadena);
                 // Se construye el hash del texto y se devuelve en formato hexadecimal
                 const digest = hash.digest('hex');
                 // Se muestra el hash en hexadecimal en pantalla
-                console.log('HASH:', digest);
 
                 return digest;
     }
