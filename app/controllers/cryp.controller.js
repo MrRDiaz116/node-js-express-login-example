@@ -166,6 +166,26 @@ module.exports ={
         // Encriptación del valor con la clave derivada del secreto compartido y el vector de inicialización del usuario
         const DatoCifrado = cipherDato.update(dato, 'utf8', formato) + cipherDato.final(formato);
         return DatoCifrado;
+    },
+
+
+    sacarHash: function(nombre, apellido_paterno, apellido_materno,a_nacimiento, placeholder){
+
+                // Se transforma el año de nacimiento en string
+                a_nacimiento = String(a_nacimiento);
+                // Concatenación de las variables anteriores en una sola:
+                const cadena = nombre + apellido_paterno + apellido_materno + a_nacimiento + placeholder;
+                console.log(cadena);
+                // Creación del objeto HASH con el algoritmo sha256
+                const hash = crypto.createHash('sha256');
+                // Se alimenta el objeto HASH con la cadena que se quiere encriptar
+                hash.update(nombre);
+                // Se construye el hash del texto y se devuelve en formato hexadecimal
+                const digest = hash.digest('hex');
+                // Se muestra el hash en hexadecimal en pantalla
+                console.log('HASH:', digest);
+
+                return digest;
     }
 
 }
