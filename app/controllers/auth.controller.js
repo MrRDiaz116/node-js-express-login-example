@@ -160,26 +160,18 @@ exports.signin = (req, res) => {
         const index_role = client.rolesPruebaRoleid;
         const index_client = client.clientesPruebaIdCliente;
         Role.findByPk(index_role).then(roles => {
-        const authorities = "ROLE_" + roles.name.toUpperCase();
-          User.findByPk(index_client).then(user => {
-                req.session.token = token;
-                res.status(200).send({
-                                    id: client.clientesPruebaIdCliente,
-                                    correo: client.correo,
-                                    zc1: client.zc,
-                                    zc1Pswd: client.zcPwd,
-                                    derivedKeyPswd: client.derivedKeyPwd,
-                                    ivPswd: client.ivPwd,
-                                    saltPrivada: client.saltPrivada,
-                                    ivUsuario: client.ivUsuario,
-                                    nombre: user.nombre,
-                                    apellido_paterno: user.apellido_paterno,
-                                    apellido_materno: user.apellido_materno,
-                                    a_nacimiento: user.a_nacimiento,
-                                    placeholder_h: user.placeholder_h,
-                                    roles: authorities
-                                    });
-          });
+          const authorities = "ROLE_" + roles.name.toUpperCase();
+          req.session.token = token;
+          res.status(200).send({
+                              id: client.clientesPruebaIdCliente,
+                              correo: client.correo,
+                              zc1: client.zc,
+                              zc1Pswd: client.zcPwd,
+                              derivedKeyPswd: client.derivedKeyPwd,
+                              ivPswd: client.ivPwd,
+                              saltPrivada: client.saltPrivada,
+                              ivUsuario: client.ivUsuario,
+                              });
         });
       })
       .catch(err => {
