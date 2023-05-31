@@ -36,7 +36,6 @@ exports.signup = async (req, res) => {
       nombre_contacto_confianza: req.body.nombre_contacto_confianza,
       apellido_paterno_contacto_confianza: req.body.apellido_paterno_contacto_confianza,
       apellido_materno_contacto_confianza: req.body.apellido_materno_contacto_confianza,
-      relacion_cliente: req.body.relacion_cliente,
       tel_contacto_confianza: req.body.tel_contacto_confianza,
       correo_contacto_confianza: req.body.correo_contacto_confianza,
     });
@@ -130,8 +129,8 @@ exports.signin = (req, res) => {
   
         if (!client) {
           return res.status(404).send({ message: "No se encontró al usuario." });
-        };
-  
+        };        
+
         const formato = 'hex'
         const salt = client.salt;
         const saltPwdCliente = Buffer.from(client.saltPwd,formato);
@@ -148,6 +147,69 @@ exports.signin = (req, res) => {
         var passwordIsValid = originalPassword == comparisionPassword;
   
         if (!passwordIsValid) {
+          return res.status(401).send({
+            accessToken: null,
+            message: "¡Respuesta inválida!"
+          });
+        }
+        var token = jwt.sign({ id: client.userid }, config.secret, {
+          expiresIn: 86400 // 24 hours
+        });
+      
+        const index_role = client.rolesPruebaRoleid;
+        const index_user = client.clientesPruebaIdCliente;
+        Role.findByPk(index_role).then(roles => {
+          User.findByPk(index_user).then(user => {
+          const authorities = "ROLE_" + roles.name.toUpperCase();
+          req.session.token = token;
+
+          res.status(200).send({
+                              id: client.clientesPruebaIdCliente,
+                              correo: client.correo,
+                              zc1: client.zc,
+                              zc1Pswd: client.zcPwd,
+                              derivedKeyPswd: client.derivedKeyPwd,
+                              ivPswd: client.ivPwd,
+                              saltPrivada: client.saltPrivada,
+                              ivUsuario: client.ivUsuario,
+                              nombre: user.nombre,
+                              genero: user.genero
+                              });
+            });
+        });
+      })
+      .catch(err => {
+        res.status(500).send({ message: err.message });
+      });
+  };
+
+  exports.restore_pwd = (req, res) => {
+    Client.findOne({
+      where: {
+        correo: req.body.correo
+      }
+    })
+      .then(client => {
+  
+        if (!client) {
+          return res.status(404).send({ message: "No se encontró al usuario." });
+        };
+
+        const formato = 'hex'
+        const salt = client.salt;
+        const saltPreguntaCliente = Buffer.from(client.saltPregunta,formato);
+        const iterations = 480000;
+        const length2 = 32;
+        const algorithm = 'sha256';
+        const originalPregunta = client.derivedKeyPregunta;
+        const bodyResponse = bcrypt.hashSync(req.body.pregunta_seguridad, salt);
+  
+        const derivedKeyPwdCliente = crypto.pbkdf2Sync(bodyResponse, saltPreguntaCliente, iterations, length2, algorithm);
+        const comparisionPassword = derivedKeyPwdCliente.toString('hex');
+
+        var responseIsValid = originalPregunta == comparisionPassword;
+  
+        if (!responseIsValid) {
           return res.status(401).send({
             accessToken: null,
             message: "¡Contraseña inválida!"

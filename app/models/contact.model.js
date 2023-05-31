@@ -5,9 +5,6 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true,
             primaryKey: true
       },
-      /*id_cliente: {
-        type: Sequelize.INTEGER
-      },*/
       nombre_contacto_confianza: {
         type: Sequelize.STRING
       },
@@ -15,9 +12,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       apellido_materno_contacto_confianza: {
-        type: Sequelize.STRING
-      },
-      relacion_cliente: {
         type: Sequelize.STRING
       },
       tel_contacto_confianza: {

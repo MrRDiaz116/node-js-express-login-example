@@ -20,6 +20,6 @@ module.exports = function(app) {
   );
 
   app.post("/api/auth/signin", controller.signin);
-
+  app.post("/api/auth/restorepwd", controller.restore_pwd);
   app.post("/api/auth/signout", controller.signout);
 };
