@@ -157,7 +157,6 @@ exports.signin = (req, res) => {
           expiresIn: 86400 // 24 hours
         });
       
-        const index_role = client.rolesPruebaRoleid;
         const index_user = client.clientesPruebaIdCliente;
         User.findByPk(index_user).then(user => {
         req.session.token = token;

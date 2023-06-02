@@ -57,10 +57,17 @@ db.client.belongsTo(db.contact, {
 db.user.hasOne(db.client);
 db.client.belongsTo(db.user);
 
-const Padecimientos_cliente = sequelize.define("padecimientos_cliente_prueba",{}, { timestamps: false });
+db.condition.belongsToMany(db.user, {
+  through: "user_conditions",
+  foreignKey: "id_padecimiento",
+  otherKey: "id_cliente"
+});
+db.user.belongsToMany(db.condition, {
+  through: "user_conditions",
+  foreignKey: "id_cliente",
+  otherKey: "id_padecimiento"
+});
 
-db.user.belongsToMany(db.condition, { through: Padecimientos_cliente});
-db.condition.belongsToMany(db.user, { through: Padecimientos_cliente});
 
 db.ROLES = ["user", "pharmacy", "gov"];
 
