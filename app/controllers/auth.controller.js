@@ -175,7 +175,7 @@ exports.signin = (req, res) => {
                               ivUsuario: client.ivUsuario,
                               nombre: user.nombre,
                               genero: user.genero,
-                              diagnostico: value[0].dataValues.id_padecimiento
+                              padecimiento: value[0].dataValues.id_padecimiento
                               });
           
           })
