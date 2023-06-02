@@ -12,7 +12,7 @@ exports.createVitalsNormal = async (req, res) => {
   const id_sucursal_ = 3;
   const userid = req.params.userid;
 
-  client = await Client.findByPk(userid);
+  client = await Client.findOne({ where: { clientesPruebaIdCliente: userid } });
 
   zc = client.zc;
   zcPwd = client.zcPwd;
