@@ -165,6 +165,7 @@ module.exports ={
         cipherDato.setAutoPadding(true);
         // Encriptación del valor con la clave derivada del secreto compartido y el vector de inicialización del usuario
         const DatoCifrado = cipherDato.update(dato, 'utf8', formato) + cipherDato.final(formato);
+        console.log(typeof DatoCifrado)
         return DatoCifrado;
     },
 

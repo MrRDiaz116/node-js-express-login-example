@@ -10,12 +10,6 @@ const bcrypt = require("bcryptjs");
 exports.createVitalsNormal = async (req, res) => {
   const id_sucursal_ = 3;
   const userid = req.params.userid;
-  console.log(req.body.zc);
-  console.log(req.body.zcPwd);
-  console.log(req.body.derivedKeyPwd);
-  console.log(req.body.ivPwd);
-  console.log(req.body.saltPrivada);
-  console.log(req.body.ivUsuario);
   try {
     const vital_normal = await Vitals.create({
       id_cliente: userid,
@@ -75,6 +69,7 @@ exports.createVitalsNormal = async (req, res) => {
         req.body.saltPrivada,
         req.body.ivUsuario, req.body.altura),
     });
+    
 
     res.send(vital_normal);
   } catch (error) {
