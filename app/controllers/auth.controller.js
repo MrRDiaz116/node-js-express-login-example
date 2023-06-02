@@ -5,6 +5,7 @@ const User = db.user;
 const Client = db.client;
 const Role = db.role;
 const Contact = db.contact;
+const Condition = db.condition;
 
 const Op = db.Sequelize.Op;
 
@@ -158,10 +159,10 @@ exports.signin = (req, res) => {
       
         const index_role = client.rolesPruebaRoleid;
         const index_user = client.clientesPruebaIdCliente;
-        Role.findByPk(index_role).then(roles => {
-          User.findByPk(index_user).then(user => {
-          const authorities = "ROLE_" + roles.name.toUpperCase();
-          req.session.token = token;
+        User.findByPk(index_user).then(user => {
+        req.session.token = token;
+
+        user.getPadecimientos().then(value => { 
 
           res.status(200).send({
                               id: client.clientesPruebaIdCliente,
@@ -173,10 +174,12 @@ exports.signin = (req, res) => {
                               saltPrivada: client.saltPrivada,
                               ivUsuario: client.ivUsuario,
                               nombre: user.nombre,
-                              genero: user.genero
+                              genero: user.genero,
+                              diagnostico: value[0].dataValues.id_padecimiento
                               });
-            });
-        });
+          
+          })
+          });
       })
       .catch(err => {
         res.status(500).send({ message: err.message });
