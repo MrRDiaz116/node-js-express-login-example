@@ -166,6 +166,12 @@ exports.signin = (req, res) => {
           res.status(200).send({
                               id: client.clientesPruebaIdCliente,
                               correo: client.correo,
+                              zc1: client.zc,
+                              zc1Pswd: client.zcPwd,
+                              derivedKeyPswd: client.derivedKeyPwd,
+                              ivPswd: client.ivPwd,
+                              saltPrivada: client.saltPrivada,
+                              ivUsuario: client.ivUsuario,
                               nombre: user.nombre,
                               genero: user.genero,
                               padecimiento: value[0].dataValues.id_padecimiento

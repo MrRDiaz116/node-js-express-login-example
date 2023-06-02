@@ -1,7 +1,6 @@
 const db = require("../models/index");
 const Vitals = db.vitals;
 const cryp = require("../controllers/cryp.controller")
-const Client = db.client;
 
 const util = require("node:util");
 
@@ -11,74 +10,70 @@ const bcrypt = require("bcryptjs");
 exports.createVitalsNormal = async (req, res) => {
   const id_sucursal_ = 3;
   const userid = req.params.userid;
-
-  client = await Client.findOne({ where: { clientesPruebaIdCliente: userid } });
-
-  zc = client.zc;
-  zcPwd = client.zcPwd;
-  derivedKeyPwd = client.derivedKeyPwd;
-  ivPwd = client.ivPwd;
-  saltPrivada = client.saltPrivada;
-  ivUsuario = client.ivUsuario;
-
+  console.log(req.body.zc);
+  console.log(req.body.zcPwd);
+  console.log(req.body.derivedKeyPwd);
+  console.log(req.body.ivPwd);
+  console.log(req.body.saltPrivada);
+  console.log(req.body.ivUsuario);
   try {
     const vital_normal = await Vitals.create({
       id_cliente: userid,
       id_local: id_sucursal_,
-      ritmo_cardiaco:cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario, req.body.ritmo_cardiaco),
-      frecuencia_respiratoria: cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario, req.body.frecuencia_respiratoria),
-      peso: cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario,req.body.peso),
-      indice_masa_corporal: cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario, req.body.indice_masa_corporal),
-      saturacion_oxigeno: cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario, req.body.saturacion_oxigeno),
-      temperatura: cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario, req.body.temperatura),
-      presion_sanguinea_sistolica: cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario, req.body.presion_sanguinea_sistolica),
-      presion_sanguinea_diastolica: cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario, req.body.presion_sanguinea_diastolica),
-      altura: cryp.encriptarDato(zc,
-        zcPwd,
-        derivedKeyPwd,
-        ivPwd,
-        saltPrivada,
-        ivUsuario, req.body.altura),
+      ritmo_cardiaco:cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.ritmo_cardiaco),
+      frecuencia_respiratoria: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.frecuencia_respiratoria),
+      peso: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario,req.body.peso),
+      indice_masa_corporal: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.indice_masa_corporal),
+      saturacion_oxigeno: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.saturacion_oxigeno),
+      temperatura: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.temperatura),
+      presion_sanguinea_sistolica: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.presion_sanguinea_sistolica),
+      presion_sanguinea_diastolica: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.presion_sanguinea_diastolica),
+      altura: cryp.encriptarDato(req.body.zc,
+        req.body.zcPwd,
+        req.body.derivedKeyPwd,
+        req.body.ivPwd,
+        req.body.saltPrivada,
+        req.body.ivUsuario, req.body.altura),
     });
 
     res.send(vital_normal);
