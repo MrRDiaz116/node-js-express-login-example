@@ -1,5 +1,6 @@
 const { authJwt } = require("../middleware");
-const controller = require("../controllers/vitals.controller")
+const controller = require("../controllers/vitals.controller");
+const recover = require("../controllers/recover_vitals.controller");
 
 
 module.exports = function(app) {
@@ -14,6 +15,11 @@ module.exports = function(app) {
     "/api/test/vitals/:userid",
     //[authJwt.verifyToken],
     controller.createVitalsNormal
+  );
+
+  app.post(
+    "/api/test/recover_vitals/:userid",
+    recover.recover_vitals
   );
   
 };
