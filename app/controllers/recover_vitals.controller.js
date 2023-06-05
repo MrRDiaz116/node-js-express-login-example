@@ -14,16 +14,81 @@ exports.recover_vitals = async (req, res) => {
   const old_vitals = await Vitals.findAll({ where: 
                                   { id_cliente: userid }})
 
-  const client = await Client.findOne({ where: 
-                                  { clientesPruebaIdCliente: userid,  
-                                    rolesPruebaRoleid: 1 }});
+  const client = await Client.findOne({where:
+                                        { clientesPruebaIdCliente: userid,  
+                                          rolesPruebaRoleid: 1 }});
                                     
   const contact = await Client.findOne({ where: 
-                                  { clientesPruebaIdCliente: userid,  
-                                    rolesPruebaRoleid: 4 }});
+                                        { clientesPruebaIdCliente: userid,  
+                                          rolesPruebaRoleid: 4 }});
   console.log(old_vitals);
-  console.log(client);
+  console.log(client.dataValues);
   console.log(contact);
+
+  pwdCliente = req.body.new_pwd_cliente;
+  pwdContacto = req.body.new_pwd_contacto;
+  preguntaCliente = req.body.new_respuesta_seguridad_cliente;
+  preguntaContacto = req.body.new_respuesta_seguridad_contacto;
+  saltPrivadaCliente = client.saltPrivada;
+  saltPrivadaContacto = contact.saltPrivada;
+  ivCliente = client.ivUsuario;
+  ivContacto = contact.ivUsuario;
+  saltPwdCliente  = client.saltPwd;
+  saltPwdContacto = contact.saltPwd;
+  ivPwdClienteCipher = client.ivPwd;
+  ivPwdContactoCipher = contact.ivPwd;
+  saltPreguntaCliente = client.saltPregunta;
+  saltPreguntaContacto = contact.saltPregunta;
+  ivPreguntaClienteCipher = client.ivPregunta;
+  ivPreguntaContactoCipher = contact.ivPregunta;
+
+  old_keyPrivada_client = client.keyPrivada;
+  old_keyPrivada_contact = contact.keyPrivada;
+  old_zc_client = client.zc;
+  old_zc_contact = contact.zc;
+  old_zcPwd_client = client.zcPwd;
+  old_zcPwd_contact = contact.zcPwd;
+  old_derivedKeyPwd_client = client.derivedKeyPwd;
+  old_derivedKeyPwd_client = contact.derivedKeyPwd;
+  
+
+
+  //pwdCliente, pwdContacto, preguntaCliente, preguntaContacto, saltPrivadaCliente, saltPrivadaContacto, ivCliente, ivContacto, saltPwdCliente, saltPwdContacto, ivPwdClienteCipher,  ivPwdContactoCipher, saltPreguntaCliente, saltPreguntaContacto, ivPreguntaClienteCipher,  ivPreguntaContactoCipher 
+  /*pwdCliente,
+  pwdContacto,
+  preguntaCliente
+  preguntaContacto
+  saltPrivadaCliente
+  saltPrivadaContacto
+  ivCliente
+  ivContacto
+  saltPwdCliente 
+  saltPwdContacto
+  ivPwdClienteCipher
+  ivPwdContactoCipher
+  saltPreguntaCliente
+  saltPreguntaContacto
+  ivPreguntaClienteCipher
+  ivPreguntaContactoCipher */
+
+  /*salt
+  saltPrivada
+  ivUsuario
+  saltPwd
+  ivPwd
+  saltPregunta
+  ivPregunta*/
+
+  /*attributes: ['salt',
+                                                      'saltPrivada',
+                                                      'ivUsuario',
+                                                      'saltPwd',
+                                                      'ivPwd',
+                                                      'saltPregunta',
+                                                      'ivPregunta',
+                                                      'clientesPruebaIdCliente',
+                                                      'rolesPruebaRoleid'],*/
+
 
 
   /*ritmo_cardiaco
