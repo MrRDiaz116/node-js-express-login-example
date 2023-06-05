@@ -232,9 +232,9 @@ exports.signin = (req, res) => {
         const index_role = client.rolesPruebaRoleid;
         const index_user = client.clientesPruebaIdCliente;
         Role.findByPk(index_role).then(roles => {
-          User.findByPk(index_user).then(user => {
-          const authorities = "ROLE_" + roles.name.toUpperCase();
-          req.session.token = token;
+        User.findByPk(index_user).then(user => {
+        const authorities = "ROLE_" + roles.name.toUpperCase();
+        req.session.token = token;
 
           res.status(200).send({
                               id: client.clientesPruebaIdCliente,
