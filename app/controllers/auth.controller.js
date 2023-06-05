@@ -5,7 +5,7 @@ const User = db.user;
 const Client = db.client;
 const Role = db.role;
 const Contact = db.contact;
-const Condition = db.condition;
+const Conditions = db.condition;
 
 const Op = db.Sequelize.Op;
 
@@ -30,15 +30,18 @@ exports.signup = async (req, res) => {
       codigo_postal: req.body.codigo_postal,
       a_nacimiento: req.body.a_nacimiento,
       pregunta_seguridad: req.body.pregunta_seguridad,
-      respuesta_seguridad: req.body.respuesta_seguridad
+      respuesta_seguridad: req.body.respuesta_seguridad,
+      plan_estatal: req.body.plan_estatal
     });
 
     const contact = await Contact.create({
       nombre_contacto_confianza: req.body.nombre_contacto_confianza,
       apellido_paterno_contacto_confianza: req.body.apellido_paterno_contacto_confianza,
       apellido_materno_contacto_confianza: req.body.apellido_materno_contacto_confianza,
+      pregunta_seguridad_contacto_confianza: req.body.pregunta_seguridad_contacto_confianza,
       tel_contacto_confianza: req.body.tel_contacto_confianza,
       correo_contacto_confianza: req.body.correo_contacto_confianza,
+      respuesta_seguridad_confianza: req.body.respuesta_seguridad_confianza
     });
 
     
@@ -47,7 +50,7 @@ exports.signup = async (req, res) => {
 
     var parametros = cryp.rutina_registro(contrasena, contrasena_contact,
       user.correo, contact.correo_contacto_confianza, 
-      user.respuesta_seguridad, "adios");
+      user.respuesta_seguridad, contact.respuesta_seguridad_confianza);
 
     const client = await Client.create({
       correo: req.body.correo,
@@ -72,6 +75,8 @@ exports.signup = async (req, res) => {
       clientesPruebaIdCliente:user.id_cliente,
       cConfianzaPruebaIdContactoConfianza: contact.id_contacto_confianza
     });
+
+    client.setRole([1]);
 
     const client_contact = await Client.create({
       correo: contact.correo_contacto_confianza,
@@ -98,23 +103,21 @@ exports.signup = async (req, res) => {
       rolesPruebaRoleid: [1]
     });
 
-
-    if (req.body.roles) {
-      const roles = await Role.findAll({
+    if(req.body.condiciones){
+      Conditions.findAll({
         where: {
-          name: {
-            [Op.or]: req.body.roles,
-          },
-        },
-      });
-
-      const result = client.setRole(roles);
-      if (result) res.send({ message: "¡Registro exitoso!" });
-    } else {
-      // user has role = 1
-      const result = client.setRole([1]);
-      if (result) res.send({ message: "¡Registro exitoso!" });
-    }
+          id_padecimiento: {
+            [Op.or]: req.body.condiciones
+          }
+        }
+  }).then( condition => {
+  const result = user.setPadecimientos(condition);
+  if (result) res.send({ message: "¡Registro exitoso!" });
+}) 
+} else {
+  const result = user.setPadecimientos([null]);
+  if (result) res.send({ message: "¡Registro exitoso!" });
+}
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
