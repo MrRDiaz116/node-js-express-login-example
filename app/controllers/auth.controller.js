@@ -100,10 +100,10 @@ exports.signup = async (req, res) => {
       zcPregunta: parametros.contact_cryp[15],
       clientesPruebaIdCliente:user.id_cliente,
       cConfianzaPruebaIdContactoConfianza: contact.id_contacto_confianza,
-      rolesPruebaRoleid: [1]
+      rolesPruebaRoleid: [4]
     });
 
-    if(req.body.condiciones){
+if(req.body.condiciones){
       Conditions.findAll({
         where: {
           id_padecimiento: {
@@ -166,6 +166,11 @@ exports.signin = (req, res) => {
 
         user.getPadecimientos().then(value => { 
 
+          var padecimiento = null;
+          if(value[0] != undefined){
+            padecimiento = value[0].dataValues.id_padecimiento
+          };
+
           res.status(200).send({
                               id: client.clientesPruebaIdCliente,
                               correo: client.correo,
@@ -177,7 +182,7 @@ exports.signin = (req, res) => {
                               ivUsuario: client.ivUsuario,
                               nombre: user.nombre,
                               genero: user.genero,
-                              padecimiento: value[0].dataValues.id_padecimiento
+                              padecimiento: padecimiento
                               });
           
           })
