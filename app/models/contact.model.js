@@ -14,10 +14,16 @@ module.exports = (sequelize, Sequelize) => {
       apellido_materno_contacto_confianza: {
         type: Sequelize.STRING
       },
+      pregunta_seguridad_contacto_confianza: {
+        type: Sequelize.STRING
+      },
       tel_contacto_confianza: {
         type: Sequelize.BIGINT
       },
       correo_contacto_confianza: {
+        type: Sequelize.STRING
+      },
+      respuesta_seguridad_confianza: {
         type: Sequelize.STRING
       }
     },

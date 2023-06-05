@@ -29,6 +29,7 @@ const sequelize = new Sequelize(
       }
   }
 );
+
 const db = {};
 
 db.Sequelize = Sequelize;
@@ -40,6 +41,7 @@ db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.vitals = require("../models/vitals.model.js")(sequelize, Sequelize);
 db.contact = require("../models/contact.model.js")(sequelize, Sequelize);
 db.condition = require("../models/condition.model.js")(sequelize, Sequelize);
+db.padecimientos_cliente = require("../models/padecimientos_cliente.model.js")(sequelize, Sequelize);
 
 db.role.hasMany(db.client, { as: "client" });
 db.client.belongsTo(db.role, {
@@ -53,21 +55,18 @@ db.client.belongsTo(db.contact, {
   as: "contact",
 });
 
+db.user.belongsToMany(db.condition, 
+  { through: db.padecimientos_cliente, 
+  foreignKey: 'id_cliente', 
+  otherKey: 'id_padecimiento' });
+db.condition.belongsToMany(db.user, 
+      { through: db.padecimientos_cliente, 
+        foreignKey: 'id_padecimiento', 
+        otherKey: 'id_cliente'});
+
 
 db.user.hasOne(db.client);
 db.client.belongsTo(db.user);
-
-db.condition.belongsToMany(db.user, {
-  through: "user_conditions",
-  foreignKey: "id_padecimiento",
-  otherKey: "id_cliente"
-});
-db.user.belongsToMany(db.condition, {
-  through: "user_conditions",
-  foreignKey: "id_cliente",
-  otherKey: "id_padecimiento"
-});
-
 
 db.ROLES = ["user", "pharmacy", "gov"];
 
