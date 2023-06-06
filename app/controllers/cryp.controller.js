@@ -206,16 +206,16 @@ module.exports ={
         const peerSharedKey = peer.computeSecret(serverPublicKeyBase64, formato, formato);
         const x = peer.getPrivateKey().toString(formato);
         const y = server.getPrivateKey().toString(formato);
-    
+        
+        
         const saltSharedSecret = crypto.randomBytes(16);
-    
         const keyCliente = crypto.pbkdf2Sync(x, saltPrivadaCliente, iterations, length2, algorithm);
         const keyContacto = crypto.pbkdf2Sync(y, saltPrivadaContacto, iterations, length2, algorithm);
         const Zderived = crypto.pbkdf2Sync(serverSharedKey, saltSharedSecret, iterations, length2, algorithm);
     
         const cipherCliente = crypto.createCipheriv('aes-256-cbc', keyCliente, ivCliente);
         const cipherContacto = crypto.createCipheriv('aes-256-cbc', keyContacto, ivContacto);
-    
+        
         const ZC1 = cipherCliente.update(Zderived, formato, formato) + cipherCliente.final(formato);
         const ZC2 = cipherContacto.update(Zderived, formato, formato) + cipherContacto.final(formato);
     
@@ -249,6 +249,49 @@ module.exports ={
         contact_cryp.push(keyContacto.toString(formato), ZC2, derivedKeyPwdContacto.toString(formato), ZC2Pwd, derivedKeyPreguntaContacto.toString(formato), ZC2Pregunta);
         
         return {client_cryp,contact_cryp}
+    },
+
+    encriptarDato: function(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario, dato) {
+        // Transformación a Buffer
+        formato = 'hex';
+        derivedKeyMetodo = Buffer.from(derivedKeyMetodo, formato);
+        ivMetodo = Buffer.from(ivMetodo, formato);
+        saltPrivada = Buffer.from(saltPrivada, formato);
+        ivUsuario = Buffer.from(ivUsuario, formato);
+    
+        // Se desencripta el secreto compartido
+        Z1_inverso = decrypt.desencriptarSharedKey(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario)
+    
+        // Creación del cifrador 
+        const cipherDato = crypto.createCipheriv('aes-256-cbc', Z1_inverso, ivUsuario);
+        cipherDato.setAutoPadding(true);
+        // Encriptación del valor con la clave derivada del secreto compartido y el vector de inicialización del usuario
+        const DatoCifrado = cipherDato.update(dato, 'utf8', formato) + cipherDato.final(formato);
+        return DatoCifrado;
+    },
+    
+    get_sharedSecret: function(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario){
+        formato = 'hex';
+        derivedKeyMetodo = Buffer.from(derivedKeyMetodo, formato);
+        ivMetodo = Buffer.from(ivMetodo, formato);
+        saltPrivada = Buffer.from(saltPrivada, formato);
+        ivUsuario = Buffer.from(ivUsuario, formato);
+    
+        const Z1_inverso = decrypt.desencriptarSharedKey(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario);
+        return Z1_inverso;
+        
+    },
+    
+    
+    // Función para desencriptar un valor encriptado con el secreto compartido
+    desencriptarDato: function(Z1_inverso, ivUsuario, datoCifrado){
+        ivUsuario = Buffer.from(ivUsuario, formato);
+    //Creación del descifrador
+        const decipherDato = crypto.createDecipheriv('aes-256-cbc', Z1_inverso, ivUsuario);
+        decipherDato.setAutoPadding(true);
+        // Desencriptación del valor con la clave derivada del secreto compartido y el vector de inicialización del usuario
+        const dato = decipherDato.update(datoCifrado, 'hex', 'utf8') + decipherDato.final('utf8');
+        return dato;
     }
 
 }

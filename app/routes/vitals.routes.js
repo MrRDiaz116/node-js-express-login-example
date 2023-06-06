@@ -19,7 +19,7 @@ module.exports = function(app) {
 
   app.post(
     "/api/test/recover_vitals/:userid",
-    recover.recover_vitals
+    recover.recover_user
   );
   
 };

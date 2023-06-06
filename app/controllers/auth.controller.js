@@ -47,10 +47,12 @@ exports.signup = async (req, res) => {
     
     contrasena = bcrypt.hashSync(req.body.contrasena, saltClient);
     contrasena_contact = bcrypt.hashSync(req.body.contrasena_contacto_confianza, saltContact);
+    respuesta_seguridad = bcrypt.hashSync(req.body.respuesta_seguridad, saltClient)
+    respuesta_seguridad_confianza = bcrypt.hashSync(req.body.respuesta_seguridad_confianza, saltClient)
 
     var parametros = cryp.rutina_registro(contrasena, contrasena_contact,
       user.correo, contact.correo_contacto_confianza, 
-      user.respuesta_seguridad, contact.respuesta_seguridad_confianza);
+     respuesta_seguridad, respuesta_seguridad_confianza);
 
     const client = await Client.create({
       correo: req.body.correo,
