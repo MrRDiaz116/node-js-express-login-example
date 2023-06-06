@@ -195,7 +195,20 @@ module.exports ={
         const iterations = 480000;
         const length2 = 32;
         const algorithm = 'sha256';
-    
+
+        saltPrivadaCliente = Buffer.from(saltPrivadaCliente,formato);
+        saltPrivadaContacto = Buffer.from(saltPrivadaCliente,formato);
+        ivCliente = Buffer.from(ivCliente,formato);
+        ivContacto = Buffer.from(ivContacto,formato);
+        saltPwdCliente = Buffer.from(saltPwdCliente,formato);
+        saltPwdContacto = Buffer.from(saltPwdContacto,formato);
+        ivPwdClienteCipher = Buffer.from(ivPwdClienteCipher,formato);
+        ivPwdContactoCipher = Buffer.from(ivPwdContactoCipher,formato);
+        saltPreguntaCliente = Buffer.from(saltPreguntaCliente,formato);
+        saltPreguntaContacto = Buffer.from(saltPreguntaContacto,formato);
+        ivPreguntaClienteCipher = Buffer.from(ivPreguntaClienteCipher,formato);
+        ivPreguntaContactoCipher = Buffer.from(ivPreguntaContactoCipher,formato);
+
         const server = crypto.createECDH('secp384r1');
         server.generateKeys()
         const peer = crypto.createECDH('secp384r1');
@@ -251,16 +264,16 @@ module.exports ={
         return {client_cryp,contact_cryp}
     },
 
-    encriptarDato: function(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario, dato) {
+    encriptarDato: function(Z1_inverso, ivUsuario, dato) {
         // Transformación a Buffer
         formato = 'hex';
-        derivedKeyMetodo = Buffer.from(derivedKeyMetodo, formato);
-        ivMetodo = Buffer.from(ivMetodo, formato);
-        saltPrivada = Buffer.from(saltPrivada, formato);
+        //derivedKeyMetodo = Buffer.from(derivedKeyMetodo, formato);
+        //ivMetodo = Buffer.from(ivMetodo, formato);
+        //saltPrivada = Buffer.from(saltPrivada, formato);
         ivUsuario = Buffer.from(ivUsuario, formato);
     
         // Se desencripta el secreto compartido
-        Z1_inverso = decrypt.desencriptarSharedKey(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario)
+        //Z1_inverso = decrypt.desencriptarSharedKey(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario)
     
         // Creación del cifrador 
         const cipherDato = crypto.createCipheriv('aes-256-cbc', Z1_inverso, ivUsuario);
@@ -271,12 +284,7 @@ module.exports ={
     },
     
     get_sharedSecret: function(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario){
-        formato = 'hex';
-        derivedKeyMetodo = Buffer.from(derivedKeyMetodo, formato);
-        ivMetodo = Buffer.from(ivMetodo, formato);
-        saltPrivada = Buffer.from(saltPrivada, formato);
-        ivUsuario = Buffer.from(ivUsuario, formato);
-    
+   
         const Z1_inverso = decrypt.desencriptarSharedKey(ZC1, ZC1Metodo, derivedKeyMetodo, ivMetodo, saltPrivada, ivUsuario);
         return Z1_inverso;
         
@@ -285,6 +293,7 @@ module.exports ={
     
     // Función para desencriptar un valor encriptado con el secreto compartido
     desencriptarDato: function(Z1_inverso, ivUsuario, datoCifrado){
+        formato = 'hex';
         ivUsuario = Buffer.from(ivUsuario, formato);
     //Creación del descifrador
         const decipherDato = crypto.createDecipheriv('aes-256-cbc', Z1_inverso, ivUsuario);

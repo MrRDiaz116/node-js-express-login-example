@@ -29,18 +29,18 @@ exports.recover_user = async (req, res) => {
   pwdContacto = bcrypt.hashSync(req.body.pwdContacto, saltContact);
   preguntaCliente = bcrypt.hashSync(req.body.preguntaCliente, saltClient);
   preguntaContacto = bcrypt.hashSync(req.body.preguntaContacto, saltContact);
-  saltPrivadaCliente = Buffer.from(client.saltPrivada,formato) ;
-  saltPrivadaContacto = Buffer.from(contact.saltPrivada,formato);
-  ivCliente = Buffer.from(client.ivUsuario,formato);
-  ivContacto = Buffer.from(contact.ivUsuario,formato);
-  saltPwdCliente  = Buffer.from(client.saltPwd,formato);
-  saltPwdContacto = Buffer.from(contact.saltPwd,formato);
-  ivPwdClienteCipher = Buffer.from(client.ivPwd,formato);
-  ivPwdContactoCipher = Buffer.from(contact.ivPwd,formato);
-  saltPreguntaCliente = Buffer.from(client.saltPregunta,formato);
-  saltPreguntaContacto = Buffer.from(contact.saltPregunta,formato);
-  ivPreguntaClienteCipher = Buffer.from(client.ivPregunta,formato);
-  ivPreguntaContactoCipher = Buffer.from(contact.ivPregunta,formato);
+  saltPrivadaCliente = client.saltPrivada ;
+  saltPrivadaContacto = contact.saltPrivada;
+  ivCliente = client.ivUsuario;
+  ivContacto = contact.ivUsuario;
+  saltPwdCliente  = client.saltPwd;
+  saltPwdContacto = contact.saltPwd;
+  ivPwdClienteCipher = client.ivPwd;
+  ivPwdContactoCipher = contact.ivPwd;
+  saltPreguntaCliente = client.saltPregunta;
+  saltPreguntaContacto = contact.saltPregunta;
+  ivPreguntaClienteCipher = client.ivPregunta;
+  ivPreguntaContactoCipher = contact.ivPregunta;
 
   old_keyPrivada_client = client.keyPrivada;
   old_keyPrivada_contact = contact.keyPrivada;
@@ -66,10 +66,6 @@ exports.recover_user = async (req, res) => {
   new_zcPregunta_client = new_credentials.client_cryp[5];
   new_zcPregunta_contact = new_credentials.contact_cryp[5];
 
-  enc_ivCliente = client.ivUsuario;
-  enc_ivPwdClienteCipher = client.ivPwd;
-  enc_saltPrivadaCliente = client.saltPrivada;
-
 
   const Z1_inverso = cryp.get_sharedSecret(old_zc_client, old_zcPwd_client, old_derivedKeyPwd_client, ivPwdClienteCipher, saltPrivadaCliente, ivCliente);
   const new_Z1_inverso = cryp.get_sharedSecret(new_zc_client, new_zcPwd_client, new_derivedKeyPwd_client, ivPwdClienteCipher, saltPrivadaCliente, ivCliente);
@@ -88,13 +84,7 @@ exports.recover_user = async (req, res) => {
 
         for(objeto_list in list){
           desencryp = cryp.desencriptarDato(Z1_inverso, ivCliente, list[objeto_list]);
-          console.log("***********************");
-          console.log("1:",desencryp);
-          encryp = cryp.encriptarDato(new_zc_client, new_zcPwd_client,  new_derivedKeyPwd_client, enc_ivPwdClienteCipher, enc_saltPrivadaCliente, enc_ivCliente, desencryp);
-          console.log("2:",encryp);
-          new_desencryp = cryp.desencriptarDato(new_Z1_inverso, ivCliente, encryp);
-          console.log("3:",new_desencryp);
-          console.log("***********************");
+          encryp = cryp.encriptarDato(new_Z1_inverso, ivCliente, desencryp);
         }
 
   }
