@@ -93,17 +93,28 @@ exports.recover_user = async (req, res) => {
         presion_sanguinea_diastolica: old_vitals[objeto].dataValues['presion_sanguinea_diastolica'],
         altura: old_vitals[objeto].dataValues['altura']}
 
+        let list_resultados = {ritmo_cardiaco: "",
+                          recuencia_respiratoria: "",
+                          peso: "",
+                          indice_masa_corporal: "",
+                          saturacion_oxigeno: "",
+                          temperatura: "",
+                          presion_sanguinea_sistolica: "",
+                          presion_sanguinea_diastolica: "",
+                          altura:""}
+
         for(objeto_list in list){
           desencryp = cryp.desencriptarDato(Z1_inverso, ivCliente, list[objeto_list]);
           encryp = cryp.encriptarDato(new_Z1_inverso, ivCliente, desencryp);
-          list[objeto_list] = encryp;
+          list_resultados[objeto_list] = encryp;
         }
 
-        let prueba = list;
-        old_vitals[objeto].update(prueba).then((self) => { });
+        old_vitals[objeto].update(list_resultados).then((self) => { console.log(self)});
 
-  }
+  };
 
+
+  console.log("ESTAMOS EN UN LOOP")
   let updateValuesClient = {zc: new_keyPrivada_client,
                             keyPrivada: new_zc_client,
                             derivedKeyPwd: new_derivedKeyPwd_client,

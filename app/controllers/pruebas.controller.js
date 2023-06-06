@@ -1,19 +1,16 @@
 const cryp = require("../controllers/cryp.controller");
+const decrypt = require("../controllers/decryp.controller");
 
-zc = "5ede13f9845a94ef35aaf49c40f68f8c1877335a4f47a79e6c0664d7fb38d3272e1be2001bee61c33c17e6baa694d2c8";
-zcPwd = "357f5f9ec4a159a7164d88e6e2ebb1d09b3c0be43ca2ced9eae081b653c847e81148a8c1f2c5fbf450b8df3e8930ad964e6447497f6feaa1fcbe015ae5845c24";
-derivedKeyPwd = "915a13acd4a3056c8437e7ed992567aff0ca94fa60d00ae37407f4daa07568bc";
-ivPwd = "84fc813e7256b97ece6f5373ae83d487";
-saltPrivada = "c95bf85f1160f913399bc3f43f9fa75d";
-ivUsuario = "5c7f4eabe7f1c2929f9233fa39ec75d3";
+zc = "c59380db66536efe30061042576f1557655579444d1e6cd7df3b6fe57e03e008";
+zcPwd = "573b1eaee71f7cd24654a66ce7c17758f8901d3026d198708740bcd9349f5ce199cd562750ab7bc6ffbcf9d13e6a84ad91cf5865739c6b56fbf1e45f3da148dc";
+derivedKeyPwd = "e7ea18ee6fd0ae27ce7cd94d42cf8062b62bb9c9cac4ec7521248c75ca7b15df";
+ivPwd = "db37327738641752460343b0c4b2e09a";
+saltPrivada = "aee1579d9a3846d1077804dc26dc9545";
+ivUsuario = "381f41ddee199e7c5108956b262c857d";
+dato_encriptado = "b0063c807b45a08ae9ff0e23f513bdc5";
 
-dato_encriptado = cryp.encriptarDato(zc, zcPwd,derivedKeyPwd,ivPwd,saltPrivada,ivUsuario, "1");
+
+Z1_inverso = decrypt.desencriptarSharedKey(zc, zcPwd, derivedKeyPwd, ivPwd, saltPrivada, ivUsuario);
+dato_encriptado = cryp.desencriptarDato(Z1_inverso, ivUsuario, dato_encriptado);
 console.log(dato_encriptado);
 
-
-old_zc = "e8c4dce7229a5ede70f2d86d45206671fff0d3d2cf6bb3bdc685b6a0dc186901ee707195a3541e2e621e347a5afd7885"
-old_keyPrivada = "6840bc25402eba85517223fca9a4136a29cf97b782a8d6cda4daf1d9290ec4bb"
-old_derivedKeyPwd = "6840bc25402eba85517223fca9a4136a29cf97b782a8d6cda4daf1d9290ec4bb"
-old_zcPwd = "9b86fb9458f23f43e11e41b5a23956cf56d56026b05ab970f016fb0278be1c971863bd0b113400a431ba5174cee99cd0e0487daae7b049a52c3598d1418743b4"
-old_derivedKeyPregunta = "41300d20b849fcf47770ab25a3e28c695bf3441afa61efecbbc0e8cd4266a715"
-old_zcPregunta = "21a6c5370b09e78265a2a02580247b78b02ab39d546db727f466b13bdc1446b601a45f59017e19da25cf70c174acf615400450078b2680184f2cc2c87e12c658"
