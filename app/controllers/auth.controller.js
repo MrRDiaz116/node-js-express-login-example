@@ -184,7 +184,8 @@ exports.signin = (req, res) => {
                               ivUsuario: client.ivUsuario,
                               nombre: user.nombre,
                               genero: user.genero,
-                              padecimiento: padecimiento
+                              padecimiento: padecimiento,
+                              accessToken: token
                               });
           
           })
@@ -216,15 +217,15 @@ exports.signin = (req, res) => {
         const originalPregunta = client.derivedKeyPregunta;
         const bodyResponse = bcrypt.hashSync(req.body.pregunta_seguridad, salt);
   
-        const derivedKeyPwdCliente = crypto.pbkdf2Sync(bodyResponse, saltPreguntaCliente, iterations, length2, algorithm);
-        const comparisionPassword = derivedKeyPwdCliente.toString('hex');
+        const derivedKeyResponseCliente = crypto.pbkdf2Sync(bodyResponse, saltPreguntaCliente, iterations, length2, algorithm);
+        const comparisionResponse = derivedKeyResponseCliente.toString('hex');
 
-        var responseIsValid = originalPregunta == comparisionPassword;
+        var responseIsValid = originalPregunta == comparisionResponse;
   
         if (!responseIsValid) {
           return res.status(401).send({
             accessToken: null,
-            message: "¡Contraseña inválida!"
+            message: "¡Respuesta incorrecta!"
           });
         }
         var token = jwt.sign({ id: client.userid }, config.secret, {
@@ -240,15 +241,7 @@ exports.signin = (req, res) => {
 
           res.status(200).send({
                               id: client.clientesPruebaIdCliente,
-                              correo: client.correo,
-                              zc1: client.zc,
-                              zc1Pswd: client.zcPwd,
-                              derivedKeyPswd: client.derivedKeyPwd,
-                              ivPswd: client.ivPwd,
-                              saltPrivada: client.saltPrivada,
-                              ivUsuario: client.ivUsuario,
-                              nombre: user.nombre,
-                              genero: user.genero
+                              accessToken: token
                               });
             });
         });

@@ -9,3 +9,11 @@ ivUsuario = "5c7f4eabe7f1c2929f9233fa39ec75d3";
 
 dato_encriptado = cryp.encriptarDato(zc, zcPwd,derivedKeyPwd,ivPwd,saltPrivada,ivUsuario, "1");
 console.log(dato_encriptado);
+
+
+old_zc = "e8c4dce7229a5ede70f2d86d45206671fff0d3d2cf6bb3bdc685b6a0dc186901ee707195a3541e2e621e347a5afd7885"
+old_keyPrivada = "6840bc25402eba85517223fca9a4136a29cf97b782a8d6cda4daf1d9290ec4bb"
+old_derivedKeyPwd = "6840bc25402eba85517223fca9a4136a29cf97b782a8d6cda4daf1d9290ec4bb"
+old_zcPwd = "9b86fb9458f23f43e11e41b5a23956cf56d56026b05ab970f016fb0278be1c971863bd0b113400a431ba5174cee99cd0e0487daae7b049a52c3598d1418743b4"
+old_derivedKeyPregunta = "41300d20b849fcf47770ab25a3e28c695bf3441afa61efecbbc0e8cd4266a715"
+old_zcPregunta = "21a6c5370b09e78265a2a02580247b78b02ab39d546db727f466b13bdc1446b601a45f59017e19da25cf70c174acf615400450078b2680184f2cc2c87e12c658"

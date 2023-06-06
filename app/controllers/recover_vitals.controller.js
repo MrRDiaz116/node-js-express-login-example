@@ -55,6 +55,8 @@ exports.recover_user = async (req, res) => {
                                           ivPwdClienteCipher, ivPwdContactoCipher, 
                                           saltPreguntaCliente, saltPreguntaContacto, 
                                           ivPreguntaClienteCipher, ivPreguntaContactoCipher);
+  
+  console.log(new_credentials);
 
   new_keyPrivada_client = new_credentials.client_cryp[0];
   new_zc_client = new_credentials.client_cryp[1];
@@ -77,7 +79,7 @@ exports.recover_user = async (req, res) => {
 
   const new_Z1_inverso = cryp.get_sharedSecret(new_zc_client, new_zcPwd_client, 
                                               new_derivedKeyPwd_client, ivPwdClienteCipher, 
-                                              saltPrivadaCliente, ivCliente);
+                                              saltPrivadaCliente, ivCliente);                      
 
   for(const objeto in old_vitals){
 
@@ -96,7 +98,20 @@ exports.recover_user = async (req, res) => {
           encryp = cryp.encriptarDato(new_Z1_inverso, ivCliente, desencryp);
         }
 
+        let prueba = {ritmo_cardiaco: encryp};
+        old_vitals[objeto].update(prueba).then((self) => { });
+
   }
+
+  /*let updateValuesClient = {zc: new_keyPrivada_client,
+                            keyPrivada: new_zc_client,
+                            derivedKeyPwd: new_derivedKeyPwd_client,
+                            zcPwd: new_zcPwd_client,
+                            derivedKeyPregunta: new_derivedKeyPregunta_client,
+                            zcPregunta: new_zcPregunta_client};
+  client.update(updateValuesClient).then((self) => {
+                console.log(self);
+  });*/
 
 
   //pwdCliente, pwdContacto, preguntaCliente, preguntaContacto, saltPrivadaCliente, saltPrivadaContacto, ivCliente, ivContacto, saltPwdCliente, saltPwdContacto, ivPwdClienteCipher,  ivPwdContactoCipher, saltPreguntaCliente, saltPreguntaContacto, ivPreguntaClienteCipher,  ivPreguntaContactoCipher 
@@ -146,6 +161,10 @@ exports.recover_user = async (req, res) => {
   presion_sanguinea_sistolica
   presion_sanguinea_diastolica
   altura*/
+
+  res.status(200).send({
+    id: client.clientesPruebaIdCliente
+    });
 
 
 
