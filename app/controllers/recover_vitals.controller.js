@@ -96,14 +96,15 @@ exports.recover_user = async (req, res) => {
         for(objeto_list in list){
           desencryp = cryp.desencriptarDato(Z1_inverso, ivCliente, list[objeto_list]);
           encryp = cryp.encriptarDato(new_Z1_inverso, ivCliente, desencryp);
+          list[objeto_list] = encryp;
         }
 
-        let prueba = {ritmo_cardiaco: encryp};
+        let prueba = list;
         old_vitals[objeto].update(prueba).then((self) => { });
 
   }
 
-  /*let updateValuesClient = {zc: new_keyPrivada_client,
+  let updateValuesClient = {zc: new_keyPrivada_client,
                             keyPrivada: new_zc_client,
                             derivedKeyPwd: new_derivedKeyPwd_client,
                             zcPwd: new_zcPwd_client,
@@ -111,7 +112,17 @@ exports.recover_user = async (req, res) => {
                             zcPregunta: new_zcPregunta_client};
   client.update(updateValuesClient).then((self) => {
                 console.log(self);
-  });*/
+  });
+
+  let updateValuesContact = {zc: new_keyPrivada_contact,
+                              keyPrivada: new_zc_contact,
+                              derivedKeyPwd: new_derivedKeyPwd_contact,
+                              zcPwd: new_zcPwd_contact,
+                              derivedKeyPregunta: new_derivedKeyPregunta_contact,
+                              zcPregunta: new_zcPregunta_contact};
+  contact.update(updateValuesContact).then((self) => {
+                console.log(self);
+  });
 
 
   //pwdCliente, pwdContacto, preguntaCliente, preguntaContacto, saltPrivadaCliente, saltPrivadaContacto, ivCliente, ivContacto, saltPwdCliente, saltPwdContacto, ivPwdClienteCipher,  ivPwdContactoCipher, saltPreguntaCliente, saltPreguntaContacto, ivPreguntaClienteCipher,  ivPreguntaContactoCipher 
