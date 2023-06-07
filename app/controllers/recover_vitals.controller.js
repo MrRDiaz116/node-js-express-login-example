@@ -107,7 +107,7 @@ exports.recover_user = async (req, res) => {
           console.log("Desencriptado: ",desencryp);
           console.log("****************************************************************")  
           list_resultados[objeto_list] = encryp;
-        }
+        };
 
         old_vitals[objeto].update(list_resultados).then((self) => { console.log(self)});
         console.log(new_Z1_inverso);
