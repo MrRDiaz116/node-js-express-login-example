@@ -1,15 +1,29 @@
 const db = require("../models/index");
 const Vitals = db.vitals;
-const cryp = require("../controllers/cryp.controller")
+const cryp = require("../controllers/cryp.controller");
+const Client = db.client;
 
 const util = require("node:util");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const decrypt = require("../controllers/decryp.controller");
 
 exports.createVitalsNormal = async (req, res) => {
   const id_sucursal_ = 3;
   const userid = req.params.userid;
+
+  const client = await Client.findOne({where:
+    { clientesPruebaIdCliente: userid,  
+      rolesPruebaRoleid: 1 }});
+
+  Z1_inverso = decrypt.desencriptarSharedKey(client.zc,
+    client.zcPwd, 
+    client.derivedKeyPwd, 
+    client.ivPwd, 
+    client.saltPrivada, 
+    client.ivUsuario);
+
   try {
     const vital_normal = await Vitals.create({
       id_cliente: userid,
