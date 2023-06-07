@@ -115,6 +115,27 @@ exports.recover_user = async (req, res) => {
 
   }
 
+  console.log("ESTAMOS EN UN LOOP")
+  let updateValuesClient = {zc: new_zc_client,
+                            keyPrivada: new_keyPrivada_client,
+                            derivedKeyPwd: new_derivedKeyPwd_client,
+                            zcPwd: new_zcPwd_client,
+                            derivedKeyPregunta: new_derivedKeyPregunta_client,
+                            zcPregunta: new_zcPregunta_client};
+  client.update(updateValuesClient).then((self) => {
+                console.log(self);
+  });
+
+  let updateValuesContact = {zc: new_zc_contact,
+                              keyPrivada: new_keyPrivada_contact,
+                              derivedKeyPwd: new_derivedKeyPwd_contact,
+                              zcPwd: new_zcPwd_contact,
+                              derivedKeyPregunta: new_derivedKeyPregunta_contact,
+                              zcPregunta: new_zcPregunta_contact};
+  contact.update(updateValuesContact).then((self) => {
+                console.log(self);
+  });
+
 
   //pwdCliente, pwdContacto, preguntaCliente, preguntaContacto, saltPrivadaCliente, saltPrivadaContacto, ivCliente, ivContacto, saltPwdCliente, saltPwdContacto, ivPwdClienteCipher,  ivPwdContactoCipher, saltPreguntaCliente, saltPreguntaContacto, ivPreguntaClienteCipher,  ivPreguntaContactoCipher 
   /*pwdCliente,
