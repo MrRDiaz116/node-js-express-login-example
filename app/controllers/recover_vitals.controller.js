@@ -84,7 +84,7 @@ exports.recover_user = async (req, res) => {
   for(const objeto in old_vitals){
 
         list = {ritmo_cardiaco: old_vitals[objeto].dataValues['ritmo_cardiaco'],
-        recuencia_respiratoria: old_vitals[objeto].dataValues['frecuencia_respiratoria'],
+        frecuencia_respiratoria: old_vitals[objeto].dataValues['frecuencia_respiratoria'],
         peso: old_vitals[objeto].dataValues['peso'],
         indice_masa_corporal: old_vitals[objeto].dataValues['indice_masa_corporal'],
         saturacion_oxigeno: old_vitals[objeto].dataValues['saturacion_oxigeno'],
@@ -94,7 +94,7 @@ exports.recover_user = async (req, res) => {
         altura: old_vitals[objeto].dataValues['altura']}
 
         let list_resultados = {ritmo_cardiaco: "",
-                          recuencia_respiratoria: "",
+                          frecuencia_respiratoria: "",
                           peso: "",
                           indice_masa_corporal: "",
                           saturacion_oxigeno: "",
