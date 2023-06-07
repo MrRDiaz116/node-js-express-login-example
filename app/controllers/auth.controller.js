@@ -216,15 +216,15 @@ exports.signin = (req, res) => {
         const originalPregunta = client.derivedKeyPregunta;
         const bodyResponse = bcrypt.hashSync(req.body.pregunta_seguridad, salt);
   
-        const derivedKeyPwdCliente = crypto.pbkdf2Sync(bodyResponse, saltPreguntaCliente, iterations, length2, algorithm);
-        const comparisionPassword = derivedKeyPwdCliente.toString('hex');
+        const derivedKeyResponseCliente = crypto.pbkdf2Sync(bodyResponse, saltPreguntaCliente, iterations, length2, algorithm);
+        const comparisionResponse = derivedKeyResponseCliente.toString('hex');
 
-        var responseIsValid = originalPregunta == comparisionPassword;
+        var responseIsValid = originalPregunta == comparisionResponse;
   
         if (!responseIsValid) {
           return res.status(401).send({
             accessToken: null,
-            message: "¡Contraseña inválida!"
+            message: "¡Respuesta incorrecta!"
           });
         }
         var token = jwt.sign({ id: client.userid }, config.secret, {
