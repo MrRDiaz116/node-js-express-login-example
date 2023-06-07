@@ -82,6 +82,8 @@ exports.recover_user = async (req, res) => {
         presion_sanguinea_diastolica: old_vitals[objeto].dataValues['presion_sanguinea_diastolica'],
         altura: old_vitals[objeto].dataValues['altura']}
 
+        
+
         for(objeto_list in list){
           console.log("********************", objeto_list, "****************************")
           desencryp = cryp.desencriptarDato(Z1_inverso, ivCliente, list[objeto_list]);
@@ -92,6 +94,10 @@ exports.recover_user = async (req, res) => {
           console.log("Desencriptado: ",desencryp)
           console.log("****************************************************************")  
         }
+
+        old_vitals[objeto].update({ritmo_cardiaco: encryp}).then((self) => { console.log(self)});
+        console.log(new_Z1_inverso);
+        console.log(ivCliente);
 
   }
 
