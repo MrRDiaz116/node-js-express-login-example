@@ -125,4 +125,9 @@ exports.recover_user = async (req, res) => {
                 console.log("¡Contacto actualizado existosamente!");
    });
 
+  
+   res.status(200).send({
+    id: client.clientesPruebaIdCliente
+    });
+
 };

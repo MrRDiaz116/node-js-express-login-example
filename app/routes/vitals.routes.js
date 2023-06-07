@@ -19,6 +19,7 @@ module.exports = function(app) {
 
   app.post(
     "/api/test/recover_vitals/:userid",
+    [authJwt.verifyToken],
     recover.recover_user
   );
   
