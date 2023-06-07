@@ -83,8 +83,14 @@ exports.recover_user = async (req, res) => {
         altura: old_vitals[objeto].dataValues['altura']}
 
         for(objeto_list in list){
+          console.log("********************", objeto_list, "****************************")
           desencryp = cryp.desencriptarDato(Z1_inverso, ivCliente, list[objeto_list]);
+          console.log("Desencriptado: ",desencryp)
           encryp = cryp.encriptarDato(new_Z1_inverso, ivCliente, desencryp);
+          console.log("Encriptado: ",encryp)
+          desencryp = cryp.desencriptarDato(new_Z1_inverso, ivCliente, encryp);
+          console.log("Desencriptado: ",desencryp)
+          console.log("****************************************************************")  
         }
 
   }
