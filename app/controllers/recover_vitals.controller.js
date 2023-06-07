@@ -52,7 +52,6 @@ exports.recover_user = async (req, res) => {
   old_derivedKeyPwd_contact = contact.derivedKeyPwd;
 
   new_credentials = cryp.update_credentials(pwdCliente, pwdContacto, preguntaCliente, preguntaContacto, saltPrivadaCliente, saltPrivadaContacto, ivCliente, ivContacto, saltPwdCliente, saltPwdContacto, ivPwdClienteCipher,  ivPwdContactoCipher, saltPreguntaCliente, saltPreguntaContacto, ivPreguntaClienteCipher,  ivPreguntaContactoCipher);
-  console.log(new_credentials);
 
   new_keyPrivada_client = new_credentials.client_cryp[0];
   new_keyPrivada_contact = new_credentials.contact_cryp[0];
@@ -69,9 +68,7 @@ exports.recover_user = async (req, res) => {
 
 
   const Z1_inverso = cryp.get_sharedSecret(old_zc_client, old_zcPwd_client, old_derivedKeyPwd_client, ivPwdClienteCipher, saltPrivadaCliente, ivCliente);
-  console.log("Viejo Z1: ", Z1_inverso);
   const new_Z1_inverso = cryp.get_sharedSecret(new_zc_client, new_zcPwd_client, new_derivedKeyPwd_client, ivPwdClienteCipher, saltPrivadaCliente, ivCliente);
-  console.log("Nuevo Z1: ", new_Z1_inverso);
 
   for(const objeto in old_vitals){
 
@@ -98,24 +95,16 @@ exports.recover_user = async (req, res) => {
         
 
         for(objeto_list in list){
-          console.log("********************", objeto_list, "****************************")
           desencryp = cryp.desencriptarDato(Z1_inverso, ivCliente, list[objeto_list]);
-          console.log("Desencriptado: ",desencryp);
           encryp = cryp.encriptarDato(new_Z1_inverso, ivCliente, desencryp);
-          console.log("Encriptado: ",encryp);
           desencryp = cryp.desencriptarDato(new_Z1_inverso, ivCliente, encryp);
-          console.log("Desencriptado: ",desencryp);
-          console.log("****************************************************************")  
           list_resultados[objeto_list] = encryp;
         };
 
-        old_vitals[objeto].update(list_resultados).then((self) => { console.log(self)});
-        console.log(new_Z1_inverso);
-        console.log(ivCliente);
+        old_vitals[objeto].update(list_resultados).then((self) => {console.log("Datos actualizados existosamente.") });
 
   }
 
-  console.log("ESTAMOS EN UN LOOP")
   let updateValuesClient = {zc: new_zc_client,
                             keyPrivada: new_keyPrivada_client,
                             derivedKeyPwd: new_derivedKeyPwd_client,
@@ -123,7 +112,7 @@ exports.recover_user = async (req, res) => {
                             derivedKeyPregunta: new_derivedKeyPregunta_client,
                             zcPregunta: new_zcPregunta_client};
   client.update(updateValuesClient).then((self) => {
-                console.log(self);
+                console.log("¡Usuario actualizado existosamente!");
   });
 
   let updateValuesContact = {zc: new_zc_contact,
@@ -132,133 +121,8 @@ exports.recover_user = async (req, res) => {
                               zcPwd: new_zcPwd_contact,
                               derivedKeyPregunta: new_derivedKeyPregunta_contact,
                               zcPregunta: new_zcPregunta_contact};
-  contact.update(updateValuesContact).then((self) => {
-                console.log(self);
-  });
-
-
-  //pwdCliente, pwdContacto, preguntaCliente, preguntaContacto, saltPrivadaCliente, saltPrivadaContacto, ivCliente, ivContacto, saltPwdCliente, saltPwdContacto, ivPwdClienteCipher,  ivPwdContactoCipher, saltPreguntaCliente, saltPreguntaContacto, ivPreguntaClienteCipher,  ivPreguntaContactoCipher 
-  /*pwdCliente,
-  pwdContacto,
-  preguntaCliente
-  preguntaContacto
-  saltPrivadaCliente
-  saltPrivadaContacto
-  ivCliente
-  ivContacto
-  saltPwdCliente 
-  saltPwdContacto
-  ivPwdClienteCipher
-  ivPwdContactoCipher
-  saltPreguntaCliente
-  saltPreguntaContacto
-  ivPreguntaClienteCipher
-  ivPreguntaContactoCipher */
-
-  /*salt
-  saltPrivada
-  ivUsuario
-  saltPwd
-  ivPwd
-  saltPregunta
-  ivPregunta*/
-
-  /*attributes: ['salt',
-                                                      'saltPrivada',
-                                                      'ivUsuario',
-                                                      'saltPwd',
-                                                      'ivPwd',
-                                                      'saltPregunta',
-                                                      'ivPregunta',
-                                                      'clientesPruebaIdCliente',
-                                                      'rolesPruebaRoleid'],*/
-
-
-
-  /*ritmo_cardiaco
-  recuencia_respiratoria
-  peso
-  indice_masa_corporal
-  saturacion_oxigeno
-  temperatura
-  presion_sanguinea_sistolica
-  presion_sanguinea_diastolica
-  altura*/
-
-
+  contact.update(updateValuesContact).then((self) => { 
+                console.log("¡Contacto actualizado existosamente!");
+   });
 
 };
-
-
-
-/*exports.createVitalsNormal = async (req, res) => {
-  const id_sucursal_ = 3;
-  const userid = req.params.userid;
-  try {
-    const vital_normal = await Vitals.create({
-      id_cliente: userid,
-      id_local: id_sucursal_,
-      ritmo_cardiaco:cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario, req.body.ritmo_cardiaco),
-      frecuencia_respiratoria: cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario, req.body.frecuencia_respiratoria),
-      peso: cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario,req.body.peso),
-      indice_masa_corporal: cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario, req.body.indice_masa_corporal),
-      saturacion_oxigeno: cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario, req.body.saturacion_oxigeno),
-      temperatura: cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario, req.body.temperatura),
-      presion_sanguinea_sistolica: cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario, req.body.presion_sanguinea_sistolica),
-      presion_sanguinea_diastolica: cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario, req.body.presion_sanguinea_diastolica),
-      altura: cryp.encriptarDato(req.body.zc,
-        req.body.zcPwd,
-        req.body.derivedKeyPwd,
-        req.body.ivPwd,
-        req.body.saltPrivada,
-        req.body.ivUsuario, req.body.altura),
-    });
-    
-
-    res.send(vital_normal);
-  } catch (error) {
-    res.status(500).send({
-      message: error.message || "Sucedió un error al localizar los datos.",
-    });
-  }
-};*/
