@@ -73,7 +73,7 @@ exports.recover_user = async (req, res) => {
   for(const objeto in old_vitals){
 
         list = {ritmo_cardiaco: old_vitals[objeto].dataValues['ritmo_cardiaco'],
-        recuencia_respiratoria: old_vitals[objeto].dataValues['frecuencia_respiratoria'],
+        frecuencia_respiratoria: old_vitals[objeto].dataValues['frecuencia_respiratoria'],
         peso: old_vitals[objeto].dataValues['peso'],
         indice_masa_corporal: old_vitals[objeto].dataValues['indice_masa_corporal'],
         saturacion_oxigeno: old_vitals[objeto].dataValues['saturacion_oxigeno'],
@@ -82,20 +82,31 @@ exports.recover_user = async (req, res) => {
         presion_sanguinea_diastolica: old_vitals[objeto].dataValues['presion_sanguinea_diastolica'],
         altura: old_vitals[objeto].dataValues['altura']}
 
+        let list_resultados = {ritmo_cardiaco: "",
+                          frecuencia_respiratoria: "",
+                          peso: "",
+                          indice_masa_corporal: "",
+                          saturacion_oxigeno: "",
+                          temperatura: "",
+                          presion_sanguinea_sistolica: "",
+                          presion_sanguinea_diastolica: "",
+                          altura:""}
+
         
 
         for(objeto_list in list){
           console.log("********************", objeto_list, "****************************")
           desencryp = cryp.desencriptarDato(Z1_inverso, ivCliente, list[objeto_list]);
-          console.log("Desencriptado: ",desencryp)
+          console.log("Desencriptado: ",desencryp);
           encryp = cryp.encriptarDato(new_Z1_inverso, ivCliente, desencryp);
-          console.log("Encriptado: ",encryp)
+          console.log("Encriptado: ",encryp);
           desencryp = cryp.desencriptarDato(new_Z1_inverso, ivCliente, encryp);
-          console.log("Desencriptado: ",desencryp)
+          console.log("Desencriptado: ",desencryp);
           console.log("****************************************************************")  
+          list_resultados[objeto_list] = encryp;
         }
 
-        old_vitals[objeto].update({ritmo_cardiaco: encryp}).then((self) => { console.log(self)});
+        old_vitals[objeto].update(list_resultados).then((self) => { console.log(self)});
         console.log(new_Z1_inverso);
         console.log(ivCliente);
 
