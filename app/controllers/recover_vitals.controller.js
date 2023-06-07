@@ -52,6 +52,7 @@ exports.recover_user = async (req, res) => {
   old_derivedKeyPwd_contact = contact.derivedKeyPwd;
 
   new_credentials = cryp.update_credentials(pwdCliente, pwdContacto, preguntaCliente, preguntaContacto, saltPrivadaCliente, saltPrivadaContacto, ivCliente, ivContacto, saltPwdCliente, saltPwdContacto, ivPwdClienteCipher,  ivPwdContactoCipher, saltPreguntaCliente, saltPreguntaContacto, ivPreguntaClienteCipher,  ivPreguntaContactoCipher);
+  console.log(new_credentials);
 
   new_keyPrivada_client = new_credentials.client_cryp[0];
   new_keyPrivada_contact = new_credentials.contact_cryp[0];
@@ -68,7 +69,9 @@ exports.recover_user = async (req, res) => {
 
 
   const Z1_inverso = cryp.get_sharedSecret(old_zc_client, old_zcPwd_client, old_derivedKeyPwd_client, ivPwdClienteCipher, saltPrivadaCliente, ivCliente);
+  console.log("Viejo Z1: ", Z1_inverso);
   const new_Z1_inverso = cryp.get_sharedSecret(new_zc_client, new_zcPwd_client, new_derivedKeyPwd_client, ivPwdClienteCipher, saltPrivadaCliente, ivCliente);
+  console.log("Nuevo Z1: ", new_Z1_inverso);
 
   for(const objeto in old_vitals){
 
