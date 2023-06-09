@@ -11,7 +11,7 @@ module.exports = function(app) {
 
   app.post(
     "/api/test/desensibilizada/vitals/:userid",
-    //[authJwt.verifyToken],
+    [authJwt.verifyToken],
     controller.createVitals)
 
 };

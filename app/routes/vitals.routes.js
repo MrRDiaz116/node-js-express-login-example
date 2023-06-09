@@ -12,7 +12,7 @@ module.exports = function(app) {
 
   app.post(
     "/api/test/vitals/:userid",
-    //[authJwt.verifyToken],
+    [authJwt.verifyToken],
     controller.createVitalsNormal
   );
   
