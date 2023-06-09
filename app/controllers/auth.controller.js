@@ -47,10 +47,12 @@ exports.signup = async (req, res) => {
     
     contrasena = bcrypt.hashSync(req.body.contrasena, saltClient);
     contrasena_contact = bcrypt.hashSync(req.body.contrasena_contacto_confianza, saltContact);
+    respuesta_seguridad = bcrypt.hashSync(req.body.respuesta_seguridad, saltClient)
+    respuesta_seguridad_confianza = bcrypt.hashSync(req.body.respuesta_seguridad_confianza, saltClient)
 
     var parametros = cryp.rutina_registro(contrasena, contrasena_contact,
       user.correo, contact.correo_contacto_confianza, 
-      user.respuesta_seguridad, contact.respuesta_seguridad_confianza);
+     respuesta_seguridad, respuesta_seguridad_confianza);
 
     const client = await Client.create({
       correo: req.body.correo,
@@ -214,15 +216,15 @@ exports.signin = (req, res) => {
         const originalPregunta = client.derivedKeyPregunta;
         const bodyResponse = bcrypt.hashSync(req.body.pregunta_seguridad, salt);
   
-        const derivedKeyPwdCliente = crypto.pbkdf2Sync(bodyResponse, saltPreguntaCliente, iterations, length2, algorithm);
-        const comparisionPassword = derivedKeyPwdCliente.toString('hex');
+        const derivedKeyResponseCliente = crypto.pbkdf2Sync(bodyResponse, saltPreguntaCliente, iterations, length2, algorithm);
+        const comparisionResponse = derivedKeyResponseCliente.toString('hex');
 
-        var responseIsValid = originalPregunta == comparisionPassword;
+        var responseIsValid = originalPregunta == comparisionResponse;
   
         if (!responseIsValid) {
           return res.status(401).send({
             accessToken: null,
-            message: "¡Contraseña inválida!"
+            message: "¡Respuesta incorrecta!"
           });
         }
         var token = jwt.sign({ id: client.userid }, config.secret, {
@@ -232,21 +234,13 @@ exports.signin = (req, res) => {
         const index_role = client.rolesPruebaRoleid;
         const index_user = client.clientesPruebaIdCliente;
         Role.findByPk(index_role).then(roles => {
-          User.findByPk(index_user).then(user => {
-          const authorities = "ROLE_" + roles.name.toUpperCase();
-          req.session.token = token;
+        User.findByPk(index_user).then(user => {
+        const authorities = "ROLE_" + roles.name.toUpperCase();
+        req.session.token = token;
 
           res.status(200).send({
                               id: client.clientesPruebaIdCliente,
-                              correo: client.correo,
-                              zc1: client.zc,
-                              zc1Pswd: client.zcPwd,
-                              derivedKeyPswd: client.derivedKeyPwd,
-                              ivPswd: client.ivPwd,
-                              saltPrivada: client.saltPrivada,
-                              ivUsuario: client.ivUsuario,
-                              nombre: user.nombre,
-                              genero: user.genero
+                              accessToken: token
                               });
             });
         });

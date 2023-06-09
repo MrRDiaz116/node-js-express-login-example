@@ -12,7 +12,8 @@ module.exports ={
         ivMetodo = Buffer.from(ivMetodo, formato);
         saltPrivada = Buffer.from(saltPrivada, formato);
         ivUsuario = Buffer.from(ivUsuario, formato);
-    
+
+        //ZC1 = Buffer.from(ZC1, formato);
         // Decriptador de la llave privada del usuario
         const descifradorPrivateKey = crypto.createDecipheriv('aes-256-cbc', derivedKeyMetodo, ivMetodo); // Se genera el desencriptador para el correo del cliente
         // Aqui se desencripta la llave privada del cliente con el cifrador
