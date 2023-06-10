@@ -155,7 +155,7 @@ exports.signin = (req, res) => {
         if (!passwordIsValid) {
           return res.status(401).send({
             accessToken: null,
-            message: "¡Respuesta inválida!"
+            message: "¡Contraseña incorrecta!" 
           });
         }
         var token = jwt.sign({ id: client.userid }, config.secret, {
@@ -214,7 +214,7 @@ exports.signin = (req, res) => {
         const length2 = 32;
         const algorithm = 'sha256';
         const originalPregunta = client.derivedKeyPregunta;
-        const bodyResponse = bcrypt.hashSync(req.body.pregunta_seguridad, salt);
+        const bodyResponse = bcrypt.hashSync(req.body.respuesta_seguridad, salt);
   
         const derivedKeyResponseCliente = crypto.pbkdf2Sync(bodyResponse, saltPreguntaCliente, iterations, length2, algorithm);
         const comparisionResponse = derivedKeyResponseCliente.toString('hex');
@@ -231,19 +231,13 @@ exports.signin = (req, res) => {
           expiresIn: 86400 // 24 hours
         });
       
-        const index_role = client.rolesPruebaRoleid;
-        const index_user = client.clientesPruebaIdCliente;
-        Role.findByPk(index_role).then(roles => {
-        User.findByPk(index_user).then(user => {
-        const authorities = "ROLE_" + roles.name.toUpperCase();
+        
         req.session.token = token;
 
-          res.status(200).send({
+        res.status(200).send({
                               id: client.clientesPruebaIdCliente,
                               accessToken: token
                               });
-            });
-        });
       })
       .catch(err => {
         res.status(500).send({ message: err.message });
